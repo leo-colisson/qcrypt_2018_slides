@@ -1,0 +1,730 @@
+% Notes
+% ========== Introduction
+% - Ordinateur quantiques, n'existent pas encore ==> Rajouter une slide sur les ordinateurs quantiques
+% - Parler de Bob = serveur
+% - Qubits servent à cacher les calculs. Alice doit avoir un petit ordinateur quantique
+
+% TODO : mettre la photo du qubit à l'étape précédente
+% TODO : Animation avec le plus qui s'ouvre
+% TODO : boite noire ?
+
+\documentclass[]{beamer}
+% \includeonlyframes{currentf}
+% \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}     
+\usepackage{siunitx}
+\usepackage{etoolbox}
+\usepackage{listings}
+\usepackage{color}
+% ffmpeg -framerate 24 -i %04d.png qubit_projection.mp4
+% ffmpeg -framerate 24 -start_number 94 -i %04d.png qubit_projection.mp4 
+\usepackage[]{qcircuit}
+
+\newcommand*{\cB}{\mathcal{B}}
+\newcommand*{\cC}{\mathcal{C}}
+\newcommand*{\cD}{\mathcal{D}}
+\newcommand*{\cE}{\mathcal{E}}
+\newcommand*{\cF}{\mathcal{F}}
+\newcommand*{\cG}{\mathcal{G}}
+\newcommand*{\cH}{\mathcal{H}}
+\newcommand*{\cI}{\mathcal{I}}
+\newcommand*{\cM}{\mathcal{M}}
+\newcommand*{\cN}{\mathcal{N}}
+\newcommand*{\cP}{\mathcal{P}}
+\newcommand*{\cQ}{\mathcal{Q}}
+\newcommand*{\cR}{\mathcal{R}}
+\newcommand*{\cS}{\mathcal{S}}
+\newcommand*{\cT}{\mathcal{T}}
+\newcommand*{\cU}{\mathcal{U}}
+\newcommand*{\cV}{\mathcal{V}}
+\newcommand*{\cW}{\mathcal{W}}
+\newcommand*{\cX}{\mathcal{X}}
+\newcommand*{\cY}{\mathcal{Y}}
+\newcommand*{\cZ}{\mathcal{Z}}
+
+\newcommand*{\id}{\mathrm{id}}
+\newcommand*{\tr}{\mathrm{tr}}
+\newcommand{\ket}[1]{\ensuremath{|#1\rangle}}
+\newcommand{\bra}[1]{\ensuremath{\langle #1|}}
+% \newcommand*{\ket}[1]{| #1 \rangle}
+% \newcommand*{\bra}[1]{\langle #1 |}
+\newcommand*{\spr}[2]{\langle #1 | #2 \rangle}
+\newcommand*{\proj}[1]{|#1\rangle\!\langle #1|}
+
+\newcommand*\xor{\mathbin{\oplus}}
+
+\newcommand*{\eps}[0]{\varepsilon}
+\newcommand*{\D}[0]{\mathbb{D}}
+\newcommand*{\C}[0]{\mathbb{C}}
+\newcommand*{\N}[0]{\mathbb{N}}
+\newcommand*{\R}[0]{\mathbb{R}}
+\newcommand*{\Z}[0]{\mathbb{Z}}
+
+\newcommand{\cqubit}[1]{\raisebox{-.5\height}{\includegraphics[width=0.9cm]{figures/qubit_#1.png}}}
+\newcommand{\cotimes}{\raisebox{-.5\height}{$\otimes$}}
+
+\usepackage{multimedia}
+
+\usepackage{cancel} % Barer des équations
+\newcommand<>{\xxcancel}[1]{\alt#2{\xcancel{#1}\vphantom{#1}}{#1}}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows,shadows}
+\usetikzlibrary{mindmap,backgrounds,positioning}
+\usetikzlibrary{automata,positioning,fit,backgrounds}
+\usetikzlibrary{positioning,arrows,matrix,calc,math}
+
+\usepackage{pgfplots}
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}   %% some additional layers for demo
+
+
+\usetheme{Warsaw}
+% \graphicspath{{pictures/}} % on change la racine des images
+
+
+
+\usepackage[skins,many]{tcolorbox}
+\newtcolorbox{subproof}{
+  breakable,
+  enhanced,
+  frame hidden,
+  interior hidden,
+  opacityback=0,
+  colframe=black,
+  sharp corners,
+  top = 0px, before skip = 0.1cm,
+  bottom = 0px, after  skip = 0.1cm,  
+  left=0.1cm, left skip=0.1cm,
+  right=0px, right skip=0px,
+  borderline west={0.02cm}{0pt}{black}
+}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+% \usepackage{thmtools}
+% \let\definition\relax
+% \declaretheorem[name=Definition]{definition}
+% \declaretheorem[name=Theorem]{theorem}
+% \declaretheorem[name=Lemma,sibling=theorem]{lemma}
+
+
+\setbeamerfont{subsection in toc}{size=\small}
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Plan}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\defbeamertemplate*{footline}{shadow theme}{%
+  \leavevmode%
+  \hbox{\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\hfill\insertshortauthor
+    \end{beamercolorbox}%
+
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+      \usebeamerfont{title in head/foot}\insertshorttitle\hfill%
+      \insertframenumber\,/\,\inserttotalframenumber
+    \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% Bigger margin
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
+
+\title[Classically Driven Blind Quantum Computing]{Presentation\\On the possibility of classical client blind quantum computing}
+\author{Alex Cojocaru and Léo Colisson}
+% \institute{École Normale Supérieure (ENS) Paris-Saclay, Département Informatique\\Laboratory for Foundations of Computer Science, University of Edinburgh,\\sous la direction d'Elham Kashefi}
+
+\begin{document}
+% ==================================================
+
+\begin{frame}
+  \titlepage
+\end{frame}
+% ==================================================
+
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+% ==================================================
+
+\section{Motivations}
+
+\subsection{Goal}
+
+\begin{frame}{Goal}
+  \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+      % Alice
+      \node[inner sep=0pt](alice)    {\includegraphics[width=.20\textwidth]{figures/aliceteacup.png}};
+      % Bob
+      \node<1>[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{figures/bob_marley.jpg}};
+      % Bob Marley aveugle
+      \node<2->[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{figures/bob_marley_aveugle.jpg}};
+      % Petit ordinateur
+      \node[inner sep=0pt,below=.04\textwidth of alice](petitordi) {\includegraphics[width=.20\textwidth]{figures/petit_ordinateur.jpg}};
+      % Ordinateur quantique
+      \node[inner sep=0pt,below=.04\textwidth of bob](ordiquantique) {\includegraphics[width=.35\textwidth]{figures/ordi_quantique.png}};
+      % Flèches
+      \draw<1>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west);
+      \draw[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
+      % Flèche logo atome
+      \draw<2>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] {\includegraphics[width=.15\textwidth]{figures/atome.png}};
+      % Flèche logo atome barré
+      \draw<3>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above](petit_atome_barre) {\includegraphics[width=.15\textwidth]{figures/atome_barre.png}};
+      \node<3>[above=.02\textwidth of petit_atome_barre] {{\Large \textbf{\textcolor{red}{?}}}};
+    \end{tikzpicture}
+    \caption{(Blind) Quantum Computing}
+  \end{figure}
+\end{frame}
+
+\subsection{Applications}
+
+\begin{frame}{Applications}
+  \begin{figure}[ht]
+    \centering
+    \scalebox{.7}{
+      \begin{tikzpicture}[rotate=-90]
+        \colorlet{color min hsb}[hsb]{red}
+        \colorlet{color max hsb}[hsb]{magenta}
+        \def\bl{90}
+        \colorlet{colorA}[rgb]{color max hsb!0!color min hsb!\bl!black}
+        \colorlet{colorB}[rgb]{color max hsb!20!color min hsb!\bl!black}
+        \colorlet{colorC}[rgb]{color max hsb!40!color min hsb!\bl!black}
+        \colorlet{colorD}[rgb]{color max hsb!60!color min hsb!\bl!black}
+        \colorlet{colorE}[rgb]{color max hsb!80!color min hsb!\bl!black}
+        \colorlet{colorF}[rgb]{color max hsb!100!color min hsb!\bl!black}
+        
+        \path[mindmap,
+          every node/.style={concept, circular drop shadow,execute at begin node=\hskip0pt},
+          concept color=black,text=black,font=\bfseries,
+          grow cyclic,
+          root concept/.append style={
+            concept color=black, fill=white, line width=1ex, text=black,
+            font=\large\scshape},
+          level 1 concept/.append style={sibling angle=180/5}]
+        
+        node[concept, root concept] {Simulate quantum channel}
+        child[concept color=colorA] {
+          node[concept] {Delegated computing}
+          child { node[concept] {Blind} }
+          child { node[concept] {Verifiable} }
+        }  
+        child[concept color=colorB] {
+          node[concept] {Multi-Party Computing}
+        }
+        child[concept color=colorC] {
+          node[concept] {Quantum money}
+        }
+        child[concept color=colorD] {
+          node[concept] {Quantum signature}
+        }
+        child[concept color=colorE] {
+          node[concept] {Key distribution}
+        }
+        child[concept color=colorF] {
+          node[concept] {\dots}
+        };
+      \end{tikzpicture}
+    }
+  \end{figure}
+\end{frame}
+
+\subsection{UBQC in a nutshell}
+
+\begin{frame}{UBQC in a nutshell}
+  \begin{figure}[ht]
+    \centering    
+    \begin{tikzpicture}
+      [
+        pacman/.pic={
+          \fill[yellow] (-5mm,0) -- ++ (45:5mm) arc (45:315:5mm) -- (-5mm,0);
+          \fill[black] (-5mm,0) ++ (90:3mm) circle (.7mm);
+        },
+        qubit/.style={draw, circle, color=black,
+          fill={rgb,255:red,143;green,146;blue,237},
+          inner sep=0pt,minimum width=5mm}
+        ]
+      \tikzmath{
+        int \x, \y;
+        int \xmax, \ymax, \xp, \yp;
+        \xmax = 10;
+        \ymax = 3;
+        %%%% Draw brickwork
+        %% Invisible Nodes
+        for \x in {0,...,\xmax}{
+          for \y in {0,...,\ymax}{
+            {\coordinate(n-\x-\y) at (\x,\y);};
+          };
+        };
+        %% Horizontal lines
+        for \x in {0,...,\xmax-1}{
+          for \y in {0,...,\ymax}{
+            \xp = \x + 1;
+            if \x == 0 then {
+              {\onslide<1>{\draw (n-\x-\y.center) -- (n-\xp-\y.center);}};
+            } else {
+              {\draw (n-\x-\y.center) -- (n-\xp-\y.center);};
+            };
+          };
+        };
+        %% Vertical lines
+        for \x in {0,...,\xmax}{
+          for \y in {0,...,\ymax-1}{
+            if (Mod(\y,2) == 0 && (Mod(\x,9) == 2 || Mod(\x,9) == 4)) || (Mod(\y,2) == 1 && \x > 1 && (Mod(\x,9) == 6 || Mod(\x,9) == 8)) then {
+              \yp = \y + 1;
+              {\draw (n-\x-\y) -- (n-\x-\yp);};
+            };
+          };
+        };
+        %% Nodes
+        for \x in {1,...,\xmax}{
+          for \y in {0,...,\ymax}{
+            {
+              \onslide<2->{
+                \node[qubit] (m-\x-\y) at (n-\x-\y){};
+              }
+              \onslide<2->{
+                \draw[red,thick,-stealth] (m-\x-\y.center) -- (m-\x-\y.north);
+              }
+            };
+          };
+        };
+        %% Boxes
+        {
+          \onslide<1>{
+            \node [draw, rounded corners, fill, color=red!50!white, fit=(m-1-2)(m-4-3), label=center:$U_A$] (unitA){};
+            \node [draw, rounded corners, fill, color=blue!30!white, fit=(m-1-0)(m-4-1),label=center:$U_B$] (unitB){};
+            \node [draw, rounded corners, fill, color=yellow!50!white, fit=(m-5-1)(m-8-2),label=center:$U_C$] (unitC){};
+          }
+          \onslide<2->{
+            \begin{pgfonlayer}{background}
+              \node [draw, rounded corners, fill, color=red!50!white, fit=(m-1-2)(m-4-3), label=center:$U_A$] (unitA){};
+              \node [draw, rounded corners, fill, color=blue!30!white, fit=(m-1-0)(m-4-1),label=center:$U_B$] (unitB){};
+              \node [draw, rounded corners, fill, color=green!50!white, fit=(m-5-1)(m-8-2),label=center:$U_C$] (unitC){};
+            \end{pgfonlayer}
+          }
+          \onslide<2>{
+            \draw[red,thick,-stealth] (m-\x-\y.center) -- (m-\x-\y.north);
+          }
+          %%% Legend
+          \onslide<2->{
+            \node[qubit, label={right:$=\ket{+}$}] (legA) at (5,-1){};
+            \draw[red,thick,-stealth] (legA.center) -- (legA.north);
+          }
+          %%% Pacmans
+          \onslide<3>{\pic at (1,3) {pacman};}
+          \onslide<4->{
+            \node[qubit,fill=yellow] at (n-1-3){};
+          }
+
+          \onslide<5>{\pic[rotate=90] at (1,2) {pacman};}
+          \onslide<6->{
+            \node[qubit,fill=yellow] at (n-1-2){};
+          }
+
+          \onslide<7>{\pic[rotate=225] at (1,1) {pacman};}
+          \onslide<8->{
+            \node[qubit,fill=yellow] at (n-1-1){};
+          }
+
+          \onslide<9>{\pic[rotate=45] at (1,0) {pacman};}
+          \onslide<10->{
+            \node[qubit,fill=yellow] at (n-1-0){};
+          }
+
+          \onslide<11>{\pic[rotate=135] at (2,3) {pacman};}
+          \onslide<12->{
+            \node[qubit,fill=yellow] at (n-2-3){};
+          }
+        };
+        for \x in {1,...,\xmax-1}{
+          for \y in {0,...,\ymax}{
+            {
+              \onslide<13>{
+                \node[qubit,fill=yellow] (m-\x-\y) at (n-\x-\y){};
+              }
+            };
+          };
+        };
+      }
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{UBQC in a nutshell}
+  \begin{figure}[ht]
+    \centering    
+    \begin{tikzpicture}[ampersand replacement=\&,row sep=3mm,nodes={inner sep=0pt},
+        qubit/.style={draw, circle, color=black, anchor=center,
+          fill={rgb,255:red,143;green,146;blue,237},
+          inner sep=0pt,minimum width=5mm}
+        ]
+      \matrix (m) {
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a0.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a0_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a1.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a1_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a2.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a2_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a3.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a3_grey.png}}; \\
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a4.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a4_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a5.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a5_grey.png}}; \&
+        \node {\includegraphics[width=.12\textwidth]{figures/qubit_a6.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a7.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a7_grey.png}}; \\
+      };
+      % Alice
+      \node[inner sep=0pt, below= 3mm of m](alice) {\includegraphics[width=.20\textwidth]{figures/aliceteacup.png}};
+      % Bob
+      \node[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{figures/bob_marley_aveugle.jpg}};
+      % Flèches
+      \draw<3->[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west);
+      \draw<4->[-latex] ([yshift=-.04\textwidth]bob.west |- alice.west) -- ([yshift=-.04\textwidth]alice.east);
+      % Flèche logo atome
+      \draw<3->[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{figures/qubit_a6.png}};
+     % 
+      % Graph
+      \node[above=1.5cm of bob.north east, anchor=south east] (graph) {
+        % \begin{tikzpicture}[scale=.5, every node/.style={transform shape}]
+        \begin{tikzpicture}[scale=.5, every node/.style={scale=.5}]
+        % \begin{scope}[]
+          % \scalebox{.5}{
+            % \begin{tikzpicture}
+            \tikzmath{
+              int \x, \y;
+              int \xmax, \ymax, \xp, \yp;
+              \xmax = 10;
+              \ymax = 3;
+              %%%% Draw brickwork
+              %% Invisible Nodes
+              for \x in {0,...,\xmax}{
+                for \y in {0,...,\ymax}{
+                  {\coordinate(n-\x-\y) at (\x,\y);};
+                };
+              };
+              %% Horizontal lines
+              for \x in {1,...,\xmax-1}{
+                for \y in {0,...,\ymax}{
+                  \xp = \x + 1;
+                  {\draw (n-\x-\y.center) -- (n-\xp-\y.center);};
+                };
+              };
+              %% Vertical lines
+              for \x in {0,...,\xmax}{
+                for \y in {0,...,\ymax-1}{
+                  if (Mod(\y,2) == 0 && (Mod(\x,9) == 2 || Mod(\x,9) == 4)) || (Mod(\y,2) == 1 && \x > 1 && (Mod(\x,9) == 6 || Mod(\x,9) == 8)) then {
+                    \yp = \y + 1;
+                    {\draw (n-\x-\y) -- (n-\x-\yp);};
+                  };
+                };
+              };
+              %% Nodes
+              for \x in {1,...,\xmax}{
+                for \y in {0,...,\ymax}{
+                  {
+                    \node[qubit,fill=white] (m-\x-\y) at (n-\x-\y){};
+                  };
+                };
+              };
+              %% Blue nodes
+              {
+                \onslide<4>{
+                  \node[qubit] (q1) at (n-1-3){};
+                  \draw[red,-stealth] (q1.center) -- (q1.north);
+                }
+              };
+            }
+            % \end{tikzpicture}
+          % }
+        % \end{scope}
+        \end{tikzpicture}
+      };
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{UBQC in a nutshell}
+  \begin{figure}[ht]
+    \centering    
+    \begin{tikzpicture}[ampersand replacement=\&,row sep=3mm,nodes={inner sep=0pt}]
+      \matrix (m) {
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a0.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a0_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a1.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a1_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a2.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a2_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a3.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a3_grey.png}}; \\
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a4.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a4_grey.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a5.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a5_grey.png}}; \&
+        \node {\includegraphics[width=.12\textwidth]{figures/qubit_a6.png}}; \&
+        \node<1> {\includegraphics[width=.12\textwidth]{figures/qubit_a7.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{figures/qubit_a7_grey.png}}; \\
+      };
+      % Alice
+      \node[inner sep=0pt, below= 3mm of m](alice) {\includegraphics[width=.20\textwidth]{figures/aliceteacup.png}};
+      % Bob
+      \node[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{figures/bob_marley_aveugle.jpg}};
+      % Flèches
+      \draw<3->[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west);
+      \draw<4->[-latex] ([yshift=-.04\textwidth]bob.west |- alice.west) -- ([yshift=-.04\textwidth]alice.east);
+      % Flèche logo atome
+      \draw<3->[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{figures/qubit_a6.png}};
+
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
+
+\section{Ma contribution}
+
+\begin{frame}{Ma contribution}
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{figures/au_travail.jpg}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Ma contribution}
+  \begin{block}{Mon théorème simplifié}
+    S'il existe une famille de fonctions $f_s$:
+    \begin{itemize}
+    \item simples à inverser pour un client classique connaissant $s$
+    \item difficiles à inverser pour un serveur quantique ne connaissant pas $s$
+    \item et ayant deux antécédents pour chaque image
+    \end{itemize}
+    alors il est possible de faire du calcul quantique à l'aveugle piloté classiquement.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Ma contribution}
+  \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+      \draw[fill=blue!10] (0,0) ellipse (1 and 2);
+      \draw[fill=green!10] (5,0) ellipse (2 and 2);
+      \node[fill,color=red,circle,inner sep=1pt,label=y](point) at (6.1,1) {};
+      \node(x1) at (.5,.8) {$x_1$};
+      \node(x2) at (-.3,-.5) {$x_2$};
+      \draw[-latex,bend left] (x1) to (point);
+      \draw[-latex,bend right] (x2) to (point);
+    \end{tikzpicture}
+    \caption{Fonction de hash à backdoor $f_s$}
+  \end{figure}
+\end{frame}
+
+\subsection{Superposition}
+\begin{frame}[label=current]{Ma contribution}
+  Etat initial :\\
+  \cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}%
+  \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
+\end{frame}
+\begin{frame}[label=current]{Ma contribution}
+  \begin{columns}[onlytextwidth]
+    \begin{column}{.7\textwidth}
+      Superposition :\\
+      \hspace{.04\textwidth}\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}%
+      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
+      + \cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{11}%
+      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
+      + \cqubit{00}\cotimes\cqubit{11}\cotimes\cqubit{00}%
+      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
+      + \cqubit{00}\cotimes\cqubit{11}\cotimes\cqubit{11}%
+      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
+      + \dots \strut\\
+      + \cqubit{11}\cotimes\cqubit{11}\cotimes\cqubit{11}%
+      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
+    \end{column}
+    \begin{column}{.3\textwidth}
+      \only<2>{
+        \begin{align*}
+          \ket{\phi}
+          &= \ket{0}\otimes\ket{000}\\
+          &~ + \ket{1}\otimes\ket{000}\\
+          &~ + \ket{2}\otimes\ket{000}\\
+          &~ + \ket{3}\otimes\ket{000}\\
+          &~ + \ket{4}\otimes\ket{000}\\
+          &~ + \ket{5}\otimes\ket{000}\\
+          &~ + \ket{6}\otimes\ket{000}\\
+          &~ + \ket{7}\otimes\ket{000}\\
+          &= \sum_{i=0}^{2^n-1} \ket{i}\otimes\ket{0}
+        \end{align*}
+      }
+    \end{column}
+  \end{columns}
+\end{frame}
+\abovedisplayskip=7pt
+\abovedisplayshortskip=7pt
+\belowdisplayskip=7pt
+\belowdisplayshortskip=7pt
+
+\subsection{Appliquer $f_s$ et projection}
+\begin{frame}[label=current]{Ma contribution: Projection}
+  \begin{columns}
+    \begin{column}{.4\textwidth}
+      \begin{block}{Projection}
+        Appliquer $f_s$:
+        \begin{align*}
+          & \sum_{i=0}^{2^n-1} \ket{i}\otimes\ket{0}\\
+          \rightarrow & \sum_{i=0}^{2^n-1} \ket{i}\otimes\ket{f(i)}
+        \end{align*}
+        puis mesurer le deuxième registre:
+        \begin{align*}
+          (\ket{x_1} + \ket{x_2})\otimes\ket{y}
+        \end{align*}
+        % \vspace{-1cm}\\
+        et envoie le $y$ au client.
+      \end{block}
+    \end{column}
+    \vrule{}
+    \quad
+    \begin{column}{.5\textwidth}
+      Exemple:
+      \begin{align*}
+        \ket{\phi'}
+        &= \xxcancel<2>{\ket{0}\otimes\textcolor{red}{\ket{4}}}\\
+        &~+ \ket{1}\otimes\textcolor{blue}{\ket{2}}\\
+        &~+ \xxcancel<2>{\ket{2}\otimes\textcolor{green}{\ket{6}}}\\
+        &~+ \xxcancel<2>{\ket{3}\otimes\textcolor{red}{\ket{4}}}\\
+        &~+ \xxcancel<2>{\ket{4}\otimes\textcolor{orange}{\ket{8}}}\\
+        &~+ \xxcancel<2>{\ket{5}\otimes\textcolor{green}{\ket{6}}}\\
+        &~+ \xxcancel<2>{\ket{6}\otimes\textcolor{orange}{\ket{8}}}\\
+        &~+ \ket{7}\otimes\textcolor{blue}{\ket{2}}
+      \end{align*}
+      \uncover<2>{Mesure un 2: $(\ket{1} + \ket{7})\otimes\textcolor{blue}{\ket{2}}$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\subsection{Squeezing}
+\begin{frame}[label=current]{Ma contribution}
+  \Wider{
+    \begin{block}{Squeezing}
+      
+      But: $n$ qubits $\rightarrow$ 1 qubit $\ket{+_\theta}$\\
+      Méthode:
+      \begin{itemize}
+      \item Client envoie $\alpha_i$ au hasard
+      \item Serveur applique $CZ$
+      \item Serveur mesure $\{\ket{+_{\alpha_i}}, \ket{-_{\alpha_i}}\}$, sauf dernier
+      \end{itemize}
+      Résultat: dernier qubit $\ket{+_\theta}$ avec      
+      \begin{equation*}
+        \theta = (-1)^{b_{n-1}}\left(\sum_{i=1}^{n-1} (c'_{i} - d'_i) \alpha_i\right) + \pi \left(b_{n-2} + \sum_{i=1}^{n-1} (c'_i c'_{i+1} - d'_i d'_{i+1})\right)
+      \end{equation*}
+      Client connaît $\theta$, serveur non
+    \end{block}
+  }
+\end{frame}
+
+\subsection{Résumé}
+\begin{frame}{Ma contribution : résumé}
+    \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[scale=0.5,node distance=.5, every node/.style={rounded corners}]
+      \node[draw=black,fill=white,](init){Initialisation : $\ket{000000}$};
+      \node[draw=red,fill=red!50,below= of init](superposition){Superposition : $(\ket{0}+\ket{1}+\dots+\ket{7}) \otimes \ket{000}$};
+      \node[draw=green,fill=green!50,below= of superposition](appf){Appliquer f : $\ket{0}\ket{f(0)}+\dots+\ket{7}\ket{f(7)}$};
+      \node[draw=yellow,fill=yellow!50,below= of appf](projection){Projection : $(\ket{x_1} + \ket{x_2}) \otimes \ket{y}$};
+      \node[draw=blue,fill=blue!50,below= of projection](squeezing){Squeezing : $\ket{+_\theta}$};
+      % Flèches
+      \draw[-latex] (init) to (superposition);
+      \draw[-latex] (superposition) to (appf);
+      \draw[-latex] (appf) to (projection);
+      \draw[-latex] (projection) to (squeezing);
+    \end{tikzpicture}
+    \caption{Résumé}
+  \end{figure}
+\end{frame}
+
+\begin{frame}[label=current]{Ma contribution}
+  \begin{tikzpicture}[remember picture,overlay]
+    \draw[fill=red!40] ($(current page.south west)+(1.2,6.8)$)
+    rectangle  ($(current page.south west)+(1.65,2.8)$);
+    \draw[draw=green!40, fill=green!40] ($(current page.south west)+(1.86,0.71)$)
+    rectangle  ($(current page.south west)+(3.42,6.67)$);
+    \draw[fill=yellow!40] ($(current page.south west)+(3.61,0.61)$)
+    rectangle  ($(current page.south west)+(4.18,2.39)$);
+    \draw[fill=blue!40] ($(current page.south west)+(4.22,2.71)$)
+    rectangle  ($(current page.south west)+(12.18,6.98)$);
+  \end{tikzpicture}
+  \resizebox{\textwidth}{!}{%
+    \Qcircuit @C=1em @R=2em {
+      \lstick{\ket{0}} & \gate{H} & \multigate{7}{\qquad U_{f_s}\qquad} & \qw    & \ctrl{1} & \gate{R(-\alpha_1)} & \gate{H}            & \meter   &          &                                  &          &       \\
+      \lstick{\ket{0}} & \gate{H} & \ghost{\qquad U_{f_s} \qquad}       & \qw    & \gate{Z} & \ctrl{1}            & \gate{R(-\alpha_2)} & \gate{H} & \meter   &                                  &          &       \\
+      \lstick{\ket{0}} & \gate{H} & \ghost{\qquad U_{f_s} \qquad}       & \qw    & \qw      & \gate{Z}            &                     &          &          &                                  &          &       \\
+      \lstick{\vdots}  & \vdots   &                                     & \vdots &          &                     & \vdots              &          & \ctrl{1} & \gate{R(-\alpha_{n-1})}          & \gate{H} & \meter \\
+      \lstick{\ket{0}} & \gate{H} & \ghost{\qquad U_{f_s} \qquad}       & \qw    & \qw      & \qw                 & \dots               &          & \gate{Z} & \measuretab{\mbox{Output qubit}} &          &       \\
+      \lstick{\ket{0}} & \qw      & \ghost{\qquad U_{f_s} \qquad}       & \meter &          &                     &                     &          &          &                                  &          &       \\
+      \lstick{\vdots}  & \vdots   &                                     & \vdots &          &                     &                     &          &          &                                  &          &       \\ 
+      \lstick{\ket{0}} & \qw      & \ghost{\qquad U_{f_s} \qquad}       & \meter &          &                     &                     &          &          &                                  &          &       \\
+    }
+  }
+\end{frame}
+
+\begin{frame}{Conclusion}
+  \begin{block}{Travail}
+    \begin{itemize}
+    \item Premier travail\footnote{Modulo un article publié après mon stage...} pour montrer que le calcul quantique à l'aveugle piloté classiquement semble possible
+    \item Reste à expliciter la fonction $f_s$: quelques pistes + papier recent
+    \end{itemize}
+  \end{block}
+  \begin{block}{Personnel}
+    \begin{itemize}
+    \item Stage très formateur
+    \item Travail d'équipe important
+    \item Confirme mon intérêt pour cette branche
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Conclusion}
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{figures/merci.jpg}
+  \end{figure}
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
