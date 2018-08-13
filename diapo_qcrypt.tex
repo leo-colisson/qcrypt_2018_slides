@@ -75,7 +75,6 @@
 \usetikzlibrary{automata,positioning,fit,backgrounds}
 \usetikzlibrary{positioning,arrows,matrix,calc,math}
 
-\usepackage{pgfplots}
 
 \pgfdeclarelayer{background}
 \pgfdeclarelayer{foreground}
@@ -379,6 +378,9 @@
 
           \onslide<11>{\pic[rotate=135] at (2,3) {pacman};}
           \onslide<12->{
+% * <tobias.bora@gmail.com> 2018-08-13T09:45:50.979Z:
+%
+% ^.
             \node[qubit,fill=yellow] at (n-2-3){};
           }
         };
