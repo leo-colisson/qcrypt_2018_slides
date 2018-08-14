@@ -1,0 +1,126 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+
+\begin{document}
+\begin{standaloneframe}
+  \begin{tikzpicture}
+    [
+      pacman/.pic={
+        \fill[yellow] (-5mm,0) -- ++ (45:5mm) arc (45:315:5mm) -- (-5mm,0);
+        \fill[black] (-5mm,0) ++ (90:3mm) circle (.7mm);
+      },
+      qubit/.style={draw, circle, color=black,
+        fill={rgb,255:red,143;green,146;blue,237},
+        inner sep=0pt,minimum width=5mm}
+      ]
+    \tikzmath{
+      int \x, \y;
+      int \xmax, \ymax, \xp, \yp;
+      \xmax = 10;
+      \ymax = 3;
+      %%%% Draw brickwork
+      %% Invisible Nodes
+      for \x in {0,...,\xmax}{
+        for \y in {0,...,\ymax}{
+          {\coordinate(n-\x-\y) at (\x,\y);};
+        };
+      };
+      %% Horizontal lines
+      for \x in {0,...,\xmax-1}{
+        for \y in {0,...,\ymax}{
+          \xp = \x + 1;
+          if \x == 0 then {
+            {\onslide<1>{\draw (n-\x-\y.center) -- (n-\xp-\y.center);}};
+          } else {
+            {\draw (n-\x-\y.center) -- (n-\xp-\y.center);};
+          };
+        };
+      };
+      %% Vertical lines
+      for \x in {0,...,\xmax}{
+        for \y in {0,...,\ymax-1}{
+          if (Mod(\y,2) == 0 && (Mod(\x,9) == 2 || Mod(\x,9) == 4)) || (Mod(\y,2) == 1 && \x > 1 && (Mod(\x,9) == 6 || Mod(\x,9) == 8)) then {
+            \yp = \y + 1;
+            {\draw (n-\x-\y) -- (n-\x-\yp);};
+          };
+        };
+      };
+      %% Nodes
+      for \x in {1,...,\xmax}{
+        for \y in {0,...,\ymax}{
+          {
+            \onslide<2->{
+              \node[qubit] (m-\x-\y) at (n-\x-\y){};
+            }
+            \onslide<2->{
+              \draw[red,thick,-stealth] (m-\x-\y.center) -- (m-\x-\y.north);
+            }
+          };
+        };
+      };
+      %% Boxes
+      {
+        \onslide<1>{
+          \node [draw, rounded corners, fill, color=red!50!white, fit=(m-1-2)(m-4-3), label=center:$U_A$] (unitA){};
+          \node [draw, rounded corners, fill, color=blue!30!white, fit=(m-1-0)(m-4-1),label=center:$U_B$] (unitB){};
+          \node [draw, rounded corners, fill, color=yellow!50!white, fit=(m-5-1)(m-8-2),label=center:$U_C$] (unitC){};
+        }
+        \onslide<2->{
+          \begin{pgfonlayer}{background}
+            \node [draw, rounded corners, fill, color=red!50!white, fit=(m-1-2)(m-4-3), label=center:$U_A$] (unitA){};
+            \node [draw, rounded corners, fill, color=blue!30!white, fit=(m-1-0)(m-4-1),label=center:$U_B$] (unitB){};
+            \node [draw, rounded corners, fill, color=green!50!white, fit=(m-5-1)(m-8-2),label=center:$U_C$] (unitC){};
+          \end{pgfonlayer}
+        }
+        \onslide<2>{
+          \draw[red,thick,-stealth] (m-\x-\y.center) -- (m-\x-\y.north);
+        }
+        %%% Legend
+        \onslide<2->{
+          \node[qubit, label={right:$=\ket{+}$}] (legA) at (5,-1){};
+          \draw[red,thick,-stealth] (legA.center) -- (legA.north);
+        }
+        %%% Pacmans
+        \onslide<3>{\pic at (1,3) {pacman};}
+        \onslide<4->{
+          \node[qubit,fill=yellow] at (n-1-3){};
+        }
+
+        \onslide<5>{\pic[rotate=90] at (1,2) {pacman};}
+        \onslide<6->{
+          \node[qubit,fill=yellow] at (n-1-2){};
+        }
+
+        \onslide<7>{\pic[rotate=225] at (1,1) {pacman};}
+        \onslide<8->{
+          \node[qubit,fill=yellow] at (n-1-1){};
+        }
+
+        \onslide<9>{\pic[rotate=45] at (1,0) {pacman};}
+        \onslide<10->{
+          \node[qubit,fill=yellow] at (n-1-0){};
+        }
+
+        \onslide<11>{\pic[rotate=135] at (2,3) {pacman};}
+        \onslide<12->{
+          \node[qubit,fill=yellow] at (n-2-3){};
+        }
+      };
+      for \x in {1,...,\xmax-1}{
+        for \y in {0,...,\ymax}{
+          {
+            \onslide<13>{
+              \node[qubit,fill=yellow] (m-\x-\y) at (n-\x-\y){};
+            }
+          };
+        };
+      };
+    }
+  \end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

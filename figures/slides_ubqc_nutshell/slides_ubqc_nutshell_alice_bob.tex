@@ -1,0 +1,151 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+\graphicspath{{../}}
+
+\begin{document}
+\begin{standaloneframe}
+  \begin{tikzpicture}[ampersand replacement=\&,row sep=3mm,nodes={inner sep=0pt},
+      qubit/.style={draw, circle, color=black, anchor=center,
+        fill={rgb,255:red,143;green,146;blue,237},
+        inner sep=0pt,minimum width=5mm}
+      ]
+    \matrix (m) {
+      \node<1> {\includegraphics[width=.12\textwidth]{qubit_a0.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a0_grey.png}}; \&
+      \node<1> {\includegraphics[width=.12\textwidth]{qubit_a1.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a1_grey.png}}; \&
+      \node<1> {\includegraphics[width=.12\textwidth]{qubit_a2.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a2_grey.png}}; \&
+      \node<1> {\includegraphics[width=.12\textwidth]{qubit_a3.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a3_grey.png}};  \node<5-> {\includegraphics[width=.12\textwidth]{qubit_a3.png}}; \node<8-> {\includegraphics[width=.12\textwidth]{qubit_a3_grey.png}}; \\
+      \node<1> {\includegraphics[width=.12\textwidth]{qubit_a4.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a4_grey.png}}; \&
+      \node<1> {\includegraphics[width=.12\textwidth]{qubit_a5.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a5_grey.png}}; \&
+      \node {\includegraphics[width=.12\textwidth]{qubit_a6.png}}; \node<5-> {\includegraphics[width=.12\textwidth]{qubit_a6_grey.png}}; \&
+      \node<1> {\includegraphics[width=.12\textwidth]{qubit_a7.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a7_grey.png}}; \\
+    };
+    % Alice
+    \node[inner sep=0pt, below= 3mm of m](alice) {\includegraphics[width=.20\textwidth]{aliceteacup.png}};
+    % Bob
+    \node[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley_aveugle.jpg}};
+    % Flèches
+    % \draw<3->[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west);
+    \draw<3-4,6-7,12>[-latex] ([yshift=-.04\textwidth]bob.west |- alice.west) -- ([yshift=-.04\textwidth]alice.east);
+    % Flèche logo atome
+    \draw<3-4>[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{qubit_a6.png}};
+    \draw<6-7>[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{qubit_a3.png}};
+    \draw<9-10>[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west);
+    % 
+    % Graph
+    \node[above=1.5cm of bob.north east, anchor=south east] (graph) {
+      \begin{tikzpicture}[scale=0.5, every node/.style={transform shape},
+          line qubit/.style={-{Stealth[scale=.5]}},
+          pacman/.pic={
+            \fill[yellow] (-5mm,0) -- ++ (45:5mm) arc (45:315:5mm) -- (-5mm,0);
+            \fill[black] (-5mm,0) ++ (90:3mm) circle (.7mm);
+          },
+          dashed pacman/.pic={
+            \fill[yellow!50] (-5mm,0) -- ++ (45:5mm) arc (45:315:5mm) -- (-5mm,0);
+            \draw[black,dashed] (-5mm,0) -- ++ (45:5mm) arc (45:315:5mm) -- (-5mm,0);
+            \fill[black] (-5mm,0) ++ (90:3mm) circle (.7mm);
+          }
+          ]
+        \tikzmath{
+          int \x, \y;
+          int \xmax, \ymax, \xp, \yp;
+          \xmax = 10;
+          \ymax = 3;
+          %%%% Draw brickwork
+          %% Invisible Nodes
+          for \x in {0,...,\xmax}{
+            for \y in {0,...,\ymax}{
+              {\coordinate(n-\x-\y) at (\x,\y);};
+            };
+          };
+          %% Horizontal lines
+          for \x in {1,...,\xmax-1}{
+            for \y in {0,...,\ymax}{
+              \xp = \x + 1;
+              {\draw (n-\x-\y.center) -- (n-\xp-\y.center);};
+            };
+          };
+          %% Vertical lines
+          for \x in {0,...,\xmax}{
+            for \y in {0,...,\ymax-1}{
+              if (Mod(\y,2) == 0 && (Mod(\x,9) == 2 || Mod(\x,9) == 4)) || (Mod(\y,2) == 1 && \x > 1 && (Mod(\x,9) == 6 || Mod(\x,9) == 8)) then {
+                \yp = \y + 1;
+                {\draw (n-\x-\y) -- (n-\x-\yp);};
+              };
+            };
+          };
+          %% Nodes
+          for \x in {1,...,\xmax}{
+            for \y in {0,...,\ymax}{
+              {
+                \node[qubit,fill=white] (m-\x-\y) at (n-\x-\y){};
+              };
+            };
+          };
+          %% Blue nodes
+          {
+            \onslide<4->{
+              \node[qubit] (q1) at (n-1-3){};
+              \draw[red,line qubit] (q1.center) -- (q1.east);
+            }
+            \onslide<7->{
+              \node[qubit] (q1) at (n-1-2){};
+              \draw[red,line qubit] (q1.center) -- (q1.south west);
+            }
+            \onslide<8->{
+              \pgfmathsetseed{1}
+              % First column
+              \node[qubit] (q1) at (n-1-1){};
+              \draw[red,line qubit] (q1.center) -- (q1.north);
+              \node[qubit] (q1) at (n-1-0){};
+              \draw[red,line qubit] (q1.center) -- (q1.north west);
+              % Other columns
+              \pgfmathdeclarerandomlist{randomanchors}{{north}{north east}{east}{south east}{south}{south west}{west}{north west}}
+              \foreach \x in {2,...,\xmax}{
+                \foreach \y in {0,...,\ymax}{
+                  \node[qubit] (q1) at (n-\x-\y){};
+                  \pgfmathrandomitem{\myanchor}{randomanchors}
+                  \draw[red,line qubit] (q1.center) -- (q1.\myanchor);
+                }
+              }
+            }
+            %% Pacmans !
+            \onslide<9>{
+              \pic at (n-1-3) {dashed pacman};
+            }
+            \onslide<10>{
+              \pic[rotate=-90] at (n-1-3) {pacman};
+            }
+            \onslide<11->{
+              \node[qubit,fill=yellow] at (n-1-3){};
+            }
+            \onslide<13->{
+              \foreach \x in {1,...,\xmax}{
+                \foreach \y in {0,...,\ymax}{
+                  \node[qubit,fill=yellow] (q1) at (n-\x-\y){};
+                }
+              }
+              \foreach \y in {0,...,\ymax}{
+                \node[qubit] (q1) at (n-\xmax-\y){};
+              }
+            }
+            \onslide<14>{
+              \foreach \y in {0,...,\ymax}{
+                \node[qubit,fill=yellow] (q1) at (n-\xmax-\y){};
+              }
+            }
+          };
+        }
+      \end{tikzpicture}
+    };
+    % \node[fill=green,inner sep=0pt,minimum size=3pt] at (graph.north east) {};
+    % \node[fill=red,inner sep=0pt,minimum size=3pt] at (graph.north west) {};
+    % \node[fill=yellow,inner sep=0pt,minimum size=3pt] at (graph.south east) {};
+    % \node[fill=orange,inner sep=0pt,minimum size=3pt] at (graph.south west) {};
+  \end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
