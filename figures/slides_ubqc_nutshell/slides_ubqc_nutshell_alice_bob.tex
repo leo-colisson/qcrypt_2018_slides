@@ -2,12 +2,14 @@
 \input{../../includes.tex}
 \graphicspath{{../}}
 
+\tikzset{my snake/.style={decorate,decoration={snake,amplitude=.4mm,segment length=2mm,post length=1mm}}}
+
 \begin{document}
 \begin{standaloneframe}
   \begin{tikzpicture}[ampersand replacement=\&,row sep=3mm,nodes={inner sep=0pt},
       qubit/.style={draw, circle, color=black, anchor=center,
         fill={rgb,255:red,143;green,146;blue,237},
-        inner sep=0pt,minimum width=5mm}
+        inner sep=0pt,minimum width=5mm},
       ]
     \matrix (m) {
       \node<1> {\includegraphics[width=.12\textwidth]{qubit_a0.png}}; \node<2-> {\includegraphics[width=.12\textwidth]{qubit_a0_grey.png}}; \&
@@ -25,10 +27,10 @@
     \node[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley_aveugle.jpg}};
     % Flèches
     % \draw<3->[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west);
-    \draw<3-4,6-7,12>[-latex] ([yshift=-.04\textwidth]bob.west |- alice.west) -- ([yshift=-.04\textwidth]alice.east);
+    \draw<12>[-latex] ([yshift=-.04\textwidth]bob.west |- alice.west) -- ([yshift=-.04\textwidth]alice.east);
     % Flèche logo atome
-    \draw<3-4>[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{qubit_a6.png}};
-    \draw<6-7>[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{qubit_a3.png}};
+    \draw<3-4>[-latex,my snake] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{qubit_a6.png}};
+    \draw<6-7>[-latex,my snake] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west) node[midway,above=2mm] {\includegraphics[width=.12\textwidth]{qubit_a3.png}};
     \draw<9-10>[-latex] ([yshift=.04\textwidth]alice.east) -- ([yshift=.04\textwidth]bob.west |- alice.west);
     % 
     % Graph
