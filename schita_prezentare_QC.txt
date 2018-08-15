@@ -7,4 +7,10 @@
 - 1 slideabout the actual security model and perhaps at the future work slide mention the extentions to malicious and verfiability;
 - then the actual construction;
 - 1-2 slides about how we actually obtain such a function;
-- for the security proof it should be at least 1 soide for the intuition, specifically why the properties of the functions should suffice; then something more formal which includes the definition of hardcore, and the ideea of the goldreich levin proof
+- for the security proof it should be at least 1 slide for the intuition, specifically why the properties of the functions should suffice; then something more formal which includes the definition of hardcore, and the ideea of the goldreich levin proof;
+
+- use GHZ drawing + explanation;
+
+IMPORTANT:
+TIME:
+17 minutes plus 3 minutes questions
