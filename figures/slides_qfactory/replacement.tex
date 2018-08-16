@@ -1,0 +1,41 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+\graphicspath{{../}}
+
+\begin{document}
+\begin{standaloneframe}
+  \begin{tikzpicture}
+      % Alice
+      \node[inner sep=0pt](alice)    {\includegraphics[width=.20\textwidth]{aliceteacup.png}};
+      % Bob Marley aveugle
+      \node[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley_aveugle.jpg}};
+      % Petit ordinateur
+      \node[inner sep=0pt,below=.04\textwidth of alice](petitordi) {\includegraphics[width=.20\textwidth]{petit_ordinateur.jpg}};
+      % Ordinateur quantique
+      \node[inner sep=0pt,below=.04\textwidth of bob](ordiquantique) {\includegraphics[width=.35\textwidth]{ordi_quantique.png}};
+      % Flèches
+      \draw[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
+      % Flèche logo atome
+      \coordinate (alice haut) at ([yshift=.04\textwidth]petitordi.east);
+      \coordinate (bob haut) at ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west);
+      \draw<1>[-latex, my snake] (alice haut) -- (bob haut)
+      node[midway,above] {\includegraphics[width=.15\textwidth]{atome.png}};
+      % Flèche logo atome barré
+      \onslide<2>{
+        \node[rounded corners,fill=blue!50,inner sep=2pt,label=below:{\tiny QFactory}] (factory) at ($(alice haut)!.75!(bob haut)$) {\includegraphics[width=7mm]{factory.png}};
+        \def\myshift{1mm}
+        \draw[-latex] ([yshift=\myshift]alice haut) -- ([yshift=\myshift]factory.west);
+        \draw[latex-] ([yshift=-\myshift]alice haut) -- ([yshift=-\myshift]factory.west);
+        \draw[-latex, my snake] (factory) -- (bob haut) node[midway,inner sep=1pt,above] {\includegraphics[width=.08\textwidth]{atome.png}};
+        \coordinate(factoryarrow) at ([xshift=-1mm]factory.west);
+        \node[fit=(factoryarrow)(factory)(ordiquantique),draw=blue!50,rounded corners,dashed,thick]{};
+      }
+      
+    \end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

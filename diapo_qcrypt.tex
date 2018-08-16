@@ -50,8 +50,8 @@
   }%
 }
 
-\title[Classically Driven Blind Quantum Computing]{On the possibility of classical client blind quantum computing}
-\author{Alexandru Cojocaru, Léo Colisson, Elham Kashefi, Petros Wallden}
+\title[QFactory and classical blind quantum computing]{On the possibility of classical client blind quantum computing}
+\author[A. Cojocaru, L. Colisson, E. Kashefi, P. Wallden]{Alexandru Cojocaru, \underline{Léo Colisson},\\ Elham Kashefi, Petros Wallden}
 % \institute{École Normale Supérieure (ENS) Paris-Saclay, Département Informatique\\Laboratory for Foundations of Computer Science, University of Edinburgh,\\sous la direction d'Elham Kashefi}
 
 \begin{document}
@@ -90,7 +90,7 @@
       \draw<1>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west);
       \draw[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
       % Flèche logo atome
-      \draw<2>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] {\includegraphics[width=.15\textwidth]{figures/atome.png}};
+      \draw<2>[-latex,my snake] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] {\includegraphics[width=.15\textwidth]{figures/atome.png}};
       % Flèche logo atome barré
       \draw<3>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above](petit_atome_barre) {\includegraphics[width=.15\textwidth]{figures/atome_barre.png}};
       \node<3>[above=.02\textwidth of petit_atome_barre] {{\Large \textbf{\textcolor{red}{?}}}};
@@ -167,15 +167,30 @@
   \end{figure}
 \end{frame}
 
-\section{Construction}
+\section{QFactory}
 
-\begin{frame}{Construction}
-    \begin{figure}[ht]
-      \centering
-      \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{figures/au_travail.jpg}
-    \end{figure}
+\subsection{Description of the QFactory gadget}
+
+\begin{frame}{QFactory: description}
+  \begin{figure}[ht]
+    \centering
+    \includepdfpages{figures/slides_qfactory/replacement.pdf}
+    \caption{QFactory gadget: simulate quantum channel}
+  \end{figure}
 \end{frame}
 
+
+\begin{frame}{QFactory: description}
+  \begin{figure}[ht]
+    \centering
+    \includepdfpages{figures/slides_qfactory/ideal_functionality.pdf}
+    \caption{QFactory: ideal functionality}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{QFactory: Construction}
+  TODO: I'll put here the slides on the construction of the function.
+\end{frame}
 
 \begin{frame}{Construction of QFactory}
   \begin{block}{Main Theorem (informal)}
@@ -190,22 +205,6 @@
     $F$ is known as a family of \textit{2-regular trapdoor one-way functions}. \\
     
   \end{block}
-\end{frame}
-
-\begin{frame}{Construction of QFactory}
-  \begin{figure}[ht]
-    \centering
-    \begin{tikzpicture}
-      \draw[fill=blue!10] (0,0) ellipse (1 and 2);
-      \draw[fill=green!10] (5,0) ellipse (2 and 2);
-      \node[fill,color=red,circle,inner sep=1pt,label=y](point) at (6.1,1) {};
-      \node(x1) at (.5,.8) {$x_1$};
-      \node(x2) at (-.3,-.5) {$x_2$};
-      \draw[-latex,bend left] (x1) to (point);
-      \draw[-latex,bend right] (x2) to (point);
-    \end{tikzpicture}
-    \caption{Trapdoor one-way function $f \in F$}
-  \end{figure}
 \end{frame}
 
 \subsection{Superposition Stage}

@@ -9,3 +9,4 @@ all: $(FILES_OUT)
 	@echo "### Dealing with $^..."
 	@echo "##############################"
 	cd $(dir $^) && latexmk -pdf --synctex=1 $(notdir $^)
+
