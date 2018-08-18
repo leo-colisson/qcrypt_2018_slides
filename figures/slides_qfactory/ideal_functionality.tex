@@ -10,7 +10,7 @@
       % Bob Marley aveugle
       \node[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley_aveugle.jpg}};
 
-      \node[rounded corners,fill=blue!50,inner sep=2pt,label=above:{\tiny QFactory},label=right:{\tiny $\theta \sample \{0,\frac{\pi}{4},\dots,\frac{7\pi}{4}\}$}] (factory) at ([yshift=3cm]$(alice)!.5!(bob)$) {\includegraphics[width=7mm]{factory.png}};
+      \node[rounded corners,fill=blue!50,inner sep=2pt,label={above:\tiny QFactory},label=right:{\tiny $\theta \sample \{0,\frac{\pi}{4},\dots,\frac{7\pi}{4}\}$}] (factory) at ([yshift=3cm]$(alice)!.5!(bob)$) {\includegraphics[width=7mm]{factory.png}};
 
       \draw[-latex] (factory) -- (alice) node[midway,auto,swap] {\small $\theta$};
       \draw[-latex,my snake] (factory) -- (bob) node[midway,auto] {\small $\ket{+_\theta}$};

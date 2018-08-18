@@ -1,0 +1,9 @@
+* TO DO
+** TODO In slides_qfactory/ideal_functionality.tex
+Fix the ugly <- $
+** DONE In slides_qfactory/replacement.tex
+CLOSED: [2018-08-18 sam. 06:33]
+Fix the size of the text "QFactory"
+** TODO Update the font of "Im" in slides_qfactory/cryptographic_ssumptions.tex
+
+** TODO Other: mention Certified QBits?

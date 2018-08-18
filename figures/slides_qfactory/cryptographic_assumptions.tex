@@ -1,0 +1,88 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+\graphicspath{{../}}
+
+\begin{document}
+\begin{standaloneframe}[fragile]
+  \begin{tikzpicture}
+    [my box/.style={
+        draw,
+        rounded corners,
+        fill = #1,
+        text width=3cm,
+        align=center,
+        anchor=north
+      }]
+    % Properties
+    % \node[my box=green!50] (oneway) {One way};
+    % \node[my box=green!50, base right=of oneway] (trapdoor) {Trapdoor};
+    % \node[my box=green!50, base right=of trapdoor] (collision) {Collision resistant\\ For random $k$, hard to \\find $x,x'$ such that $f(x) = f(x')$};
+    % \node[my box=green!50, base right=of collision] (postquantum) {Post quantum};
+    % % Top node
+    % \node[my box=blue!50] (crypto) at ([yshift=1cm]$(oneway)!.5!(postquantum)$) {Familly $\{f_k\}$};
+    \tcbset{colback=green!10!white, width=4cm, center title}
+    \tcbsetforeverylayer{colframe=red!75!black,halign=flush left,fontupper=\small}
+    \def\boxTwoReg{\begin{tcolorbox}[title=2-Regular]
+        2 preimages for all elements in $Im(f_k)$
+      \end{tcolorbox}}
+    \def\boxoneway{\begin{tcolorbox}[title=One way]
+        This function is hard to invert\dots
+      \end{tcolorbox}}
+    \def\boxtrapdoor{\begin{tcolorbox}[title=Trapdoor]
+        \dots except if you have the trapdoor $t_k$ associated to the function index $k$.
+      \end{tcolorbox}}
+    \def\boxcollision{\begin{tcolorbox}[title=Collision resistant]
+        Without trapdoor $t_k$, hard to find $x \neq x'$ such that $f_k(x) = f_k(x')$
+      \end{tcolorbox}}
+    \def\boxpostquantum{\begin{tcolorbox}[title=Post Quantum]
+        Resistant against quantum computer.
+      \end{tcolorbox}}
+    % % Version matricielle
+    % \matrix[matrix of nodes, every node/.style={anchor=north, inner sep=0pt}] (all properties) {
+    %   \boxoneway &[7mm] \boxtrapdoor &[7mm] \boxcollision &[7mm] \boxpostquantum \\
+    % };
+    % \node[above=2cm of all properties,my box=orange!60] (familly) {Function $\{f_k\}$};
+    % \foreach \i in {1,...,4}{
+    %   \draw[-latex] (familly) -- (all properties-1-\i.north);
+    % }
+    % %%   Version carrée
+    \node[my box=orange!60] (family) {Function $\{f_k\}$};
+    \node[above=of family] (b2r) {\boxTwoReg};
+    \node[above left=of family] (bow) {\boxoneway};
+    \node[below left=of family] (bt) {\boxtrapdoor};
+    \node[below right=of family] (bc) {\boxcollision};
+    \node[above right=of family] (bpc) {\boxpostquantum};
+    % Arrows
+    \foreach \i in {b2r,bow,bt,bc,bpc}{
+      \draw[-latex] (family) -- (\i);
+    }
+    % Drawing
+    \node[below=1.3cm of family]{
+      \begin{tikzpicture}[scale=.6,transform shape]
+        \draw[fill=blue!30] (0,0) ellipse (1 and 2);
+        \draw[fill=green!30] (5,0) ellipse (2 and 2);
+        \node[fill,color=red,circle,inner sep=1pt,label=y](point) at (6.1,1) {};
+        \node(x1) at (.5,.8) {$x$};
+        \node(x2) at (-.3,-.5) {$x'$};
+        \draw[-latex,bend left] (x1) to (point);
+        \draw[-latex,bend right] (x2) to (point);
+      \end{tikzpicture}
+    };
+    % Candidate
+    \onslide<2>{
+      \node[right=1mm of family] {$\Rightarrow$ Candidate based on \cite{MP11}};
+    }
+  \end{tikzpicture}
+
+
+
+\bibliographystyle{alpha}
+\bibliography{../../biblio}
+
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

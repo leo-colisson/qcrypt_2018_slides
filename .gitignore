@@ -10,4 +10,7 @@
 *.synctex.gz
 *.toc
 *.pdf
+*.bbl
+*.blg
+*.vrb
 !figures/**/*.pdf

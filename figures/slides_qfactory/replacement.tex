@@ -14,7 +14,7 @@
       % Ordinateur quantique
       \node[inner sep=0pt,below=.04\textwidth of bob](ordiquantique) {\includegraphics[width=.35\textwidth]{ordi_quantique.png}};
       % Flèches
-      \draw[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
+      \draw[latex-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
       % Flèche logo atome
       \coordinate (alice haut) at ([yshift=.04\textwidth]petitordi.east);
       \coordinate (bob haut) at ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west);
@@ -22,7 +22,7 @@
       node[midway,above] {\includegraphics[width=.15\textwidth]{atome.png}};
       % Flèche logo atome barré
       \onslide<2>{
-        \node[rounded corners,fill=blue!50,inner sep=2pt,label=below:{\tiny QFactory}] (factory) at ($(alice haut)!.75!(bob haut)$) {\includegraphics[width=7mm]{factory.png}};
+        \node[rounded corners,fill=blue!50,inner sep=2pt,label={[blue!60,scale=.6]below:\tiny QFactory}] (factory) at ($(alice haut)!.75!(bob haut)$) {\includegraphics[width=7mm]{factory.png}};
         \def\myshift{1mm}
         \draw[-latex] ([yshift=\myshift]alice haut) -- ([yshift=\myshift]factory.west);
         \draw[latex-] ([yshift=-\myshift]alice haut) -- ([yshift=-\myshift]factory.west);

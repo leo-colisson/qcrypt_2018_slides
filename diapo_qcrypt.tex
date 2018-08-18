@@ -75,26 +75,7 @@
 \begin{frame}{Main Goal}
   \begin{figure}[ht]
     \centering
-    \begin{tikzpicture}
-      % Alice
-      \node[inner sep=0pt](alice)    {\includegraphics[width=.20\textwidth]{figures/aliceteacup.png}};
-      % Bob
-      \node<1>[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{figures/bob_marley.jpg}};
-      % Bob Marley aveugle
-      \node<2->[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{figures/bob_marley_aveugle.jpg}};
-      % Petit ordinateur
-      \node[inner sep=0pt,below=.04\textwidth of alice](petitordi) {\includegraphics[width=.20\textwidth]{figures/petit_ordinateur.jpg}};
-      % Ordinateur quantique
-      \node[inner sep=0pt,below=.04\textwidth of bob](ordiquantique) {\includegraphics[width=.35\textwidth]{figures/ordi_quantique.png}};
-      % Flèches
-      \draw<1>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west);
-      \draw[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
-      % Flèche logo atome
-      \draw<2>[-latex,my snake] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] {\includegraphics[width=.15\textwidth]{figures/atome.png}};
-      % Flèche logo atome barré
-      \draw<3>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above](petit_atome_barre) {\includegraphics[width=.15\textwidth]{figures/atome_barre.png}};
-      \node<3>[above=.02\textwidth of petit_atome_barre] {{\Large \textbf{\textcolor{red}{?}}}};
-    \end{tikzpicture}
+    \includepdfpages{figures/slides_qfactory/goal.pdf}
     \caption{(Blind) Quantum Computing}
   \end{figure}
 \end{frame}
@@ -185,6 +166,15 @@
     \centering
     \includepdfpages{figures/slides_qfactory/ideal_functionality.pdf}
     \caption{QFactory: ideal functionality}
+  \end{figure}
+\end{frame}
+
+\subsection{Cryptographic assumptions}
+
+\begin{frame}{Cryptographic assumptions}
+  \begin{figure}[ht]
+    \centering
+    \includepdfpageswidth{\linewidth}{figures/slides_qfactory/cryptographic_assumptions.pdf}
   \end{figure}
 \end{frame}
 

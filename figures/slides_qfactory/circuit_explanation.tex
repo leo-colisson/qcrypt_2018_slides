@@ -1,0 +1,113 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+\graphicspath{{../}}
+
+\newcommand{\drawHelpGrid}[2]{
+  % -      #1          #2
+  % Number of wires, Length
+  \foreach \i in {1,...,#1}{
+    \node at (-.5,-\i) {\i};
+  }
+  \foreach \i in {1,...,#2}{
+    \node at (\i,0) {\i};
+  }
+}
+
+\newcommand{\drawWires}[4]{
+  %         #1                #2                   #3          #4
+  % First coord line, First coord columns, numbers of wires, length
+  \foreach \i in {1,...,#3}{
+    \draw (#2,-#1-\i+1) -- (#2+#4,-#1-\i+1);
+  }
+}
+
+\newcommand{\drawCharWire}[4]{
+  %  -      #1                #2              #3      #4
+  %  First coord line, First coord columns, length, Content
+  \coordinate (tmpfirstpoint) at (#2,-#1);
+  \coordinate (tmplastpoint) at (#2+#3,-#1);
+  \node at ($(tmpfirstpoint)!.5!(tmplastpoint)$) {#4};
+}
+
+\newcommand{\defWireValue}[3]{
+  %     #1           #2           #3
+  %     Wire number, Wire name, params
+  \coordinate (currwirecoord) at (1,-#1);
+  \node[left=1mm of currwirecoord] {#2};
+}
+
+\tikzset{
+  default gate/.style={draw,rectangle,anchor=center,fill=white},
+  measure/.pic={
+    \draw[thick,line cap=round,line width=.2mm] (0,-3.2mm) + (90+35:3mm) arc[x radius=3mm, y radius=3mm, start angle=90+35, end angle=90-35];
+    \draw[thick,line cap=round,line width=.2mm] (0,-1mm) -- (45:2.2mm);
+  },
+}
+\newcommand{\drawGate}[4]{
+  %     #1      #2      #3         #4
+  %     Wire, length, content, properties
+  \node[default gate,#4] at (#2,-#1) {#3};
+}
+
+\newcommand{\drawBigGate}[6]{
+  % -  #1          #2              #3         #4       #5       #6
+  % Start wire, start length, number wires, length, content, properties
+  \coordinate (tmptopleft) at (#2,-#1);
+  \coordinate (tmpbottomright) at (#2+#4,-#1-#3+1);
+  \node[default gate,inner sep=3mm, fit=(tmptopleft)(tmpbottomright),#6] {#5};
+}
+
+\newcommand{\drawMeasurement}[3]{
+  % - #1,   #2      #3
+  % wire, length, options (name...)
+  \node[draw,fill=white,#3] at (#2,-#1) {\phantom{H}};
+  \pic at (#2,-#1) {measure};
+}
+
+\newcommand{\drawVDots}[2]{
+  \node[anchor=center] at (#2,-#1) {$\vdots$};
+}
+
+\begin{document}
+\begin{standaloneframe}
+  \begin{tikzpicture}[
+      gate/.style={rectangle,draw,fill=white},
+      x=8mm,
+      ]
+    \drawHelpGrid{6}{10}
+    % Name wires
+    \foreach \i in {1,3,4,6}{
+      \defWireValue{\i}{$\ket{0}$}
+    }
+    \defWireValue{2}{\vdots\hphantom{$\rangle$\,}}{}
+    \defWireValue{5}{\vdots\hphantom{$\rangle$\,}}{}
+    % Draw wires
+    \def\totalLengthwires{10}
+    \drawWires{1}{1}{1}{\totalLengthwires}
+    \drawCharWire{2}{1}{2}{$\vdots$}
+    \drawWires{3}{1}{1}{\totalLengthwires}
+    \drawWires{4}{1}{1}{5}
+    \drawCharWire{5}{1}{2}{$\vdots$}
+    \drawWires{6}{1}{1}{5}
+
+    % %% Gates
+    % H
+    \drawGate{1}{2}{H}{}
+    \drawGate{3}{2}{H}{}
+    % U
+    \drawBigGate{1}{3}{6}{2}{$U_{f_k}$}{}
+    % Measure y
+    \drawMeasurement{6}{6}{name=meas1}
+    \drawVDots{5}{6}
+    \drawMeasurement{4}{6}{name=meas1}
+    % Measure y
+    
+
+  \end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

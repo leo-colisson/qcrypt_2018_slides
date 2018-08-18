@@ -152,6 +152,13 @@
   }%
 }
 
+\newcommand{\includepdfpageswidth}[2]{%
+  \pdfximage{#2}%
+  \foreach \ov in {1,...,\the\pdflastximagepages}{%
+    \includegraphics<\ov>[page=\ov,width=#1]{#2}%
+  }%
+}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: t

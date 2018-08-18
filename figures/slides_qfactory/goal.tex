@@ -1,0 +1,33 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+\graphicspath{{../}}
+
+\begin{document}
+\begin{standaloneframe}
+  \begin{tikzpicture}
+    % Alice
+    \node[inner sep=0pt](alice)    {\includegraphics[width=.20\textwidth]{aliceteacup.png}};
+    % Bob
+    \node<1>[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley.jpg}};
+    % Bob Marley aveugle
+    \node<2->[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley_aveugle.jpg}};
+    % Petit ordinateur
+    \node[inner sep=0pt,below=.04\textwidth of alice](petitordi) {\includegraphics[width=.20\textwidth]{petit_ordinateur.jpg}};
+    % Ordinateur quantique
+    \node[inner sep=0pt,below=.04\textwidth of bob](ordiquantique) {\includegraphics[width=.35\textwidth]{ordi_quantique.png}};
+    % Flèches
+    \draw<1>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west);
+    \draw[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
+    % Flèche logo atome
+    \draw<2>[-latex,my snake] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome.png}};
+    % Flèche logo atome barré
+    \draw<3>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome_barre.png}};
+    \node<3>[above=.5mm of atome] {{\Large \textbf{\textcolor{red}{?}}}};
+  \end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
