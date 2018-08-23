@@ -1,0 +1,40 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+
+\graphicspath{{../}}
+
+\begin{document}
+\begin{standaloneframe}
+  \begin{tikzpicture}
+    \onslide<+->{\node[inner sep=0pt] (alice) {\includegraphics[width=.30\textwidth]{aliceteacup.png}};}
+    \onslide<.->{\node[inner sep=0pt,right=.30\textwidth of alice](bob) {\includegraphics[width=.30\textwidth]{bob_marley_aveugle.jpg}};}
+    \onslide<+->{\node[below=2mm of alice] (tkk) {$t_k,k$};}
+    \onslide<+->{\node[below=1mm of tkk] (alphasample) {$(\alpha_i \sample \{0,\frac{\pi}{4}\dots \frac{7\pi}{4}\})^{n-1}_{i=1}$};}
+    \onslide<+->{\draw[-stealth] ([yshift=-4mm]alphasample.south) -- ([yshift=-4mm]alphasample.south-|bob.south) node[midway,above]{$k,(\alpha_i)$} node(endtkk){} node[pos=0](begintkk){};}
+    \onslide<+->{\node[below=2mm of endtkk] (computecircuit) {Compute circuit};}
+    \addtocounter{beamerpauses}{-1}
+    \edef\beamerpausesbefore{\thebeamerpauses}
+    \includetikzpdfpageskeeplast{circuit_explanation.pdf}{anchor=north west,at=(bob.north east),name=circuit}
+    \onslide<+->{\draw[stealth-] ([yshift=-3mm]alice.south|-computecircuit.south) -- ([yshift=-3mm]computecircuit.south) node[midway,above]{$y,(b_i)$} node[pos=0](endsend){};}
+    \onslide<+->{\node[below=1mm of endsend] (preimages) {$(x,x') := {\tt Inv}(t_k,y)$};}
+    \onslide<+->{\node[yshift=-1mm,anchor=north west] (theta) at (alphasample.west|-preimages.south) {$\theta := \frac{\pi}{4}(-1)^{x_n}\sum_{i=1}^{n-1}(x_i-x_i')(4b_i+\alpha_i)$};}
+    \onslide<+->{\node[anchor=mid,at=($(begintkk)!.5!(endsend)$), draw, fill, inner color=red!80,outer color=orange!80,decorate,ellipse,decoration={random steps,zigzag,,segment length=2mm,amplitude=1mm}] {$\Rightarrow$ Gets $\theta$};}
+    
+    \setcounter{beamerpauses}{\beamerpausesbefore}
+    \coordinate (belowcircuit) at (theta.south west-|circuit.south east);
+    \onslide<+->{\node[anchor=north, yshift=-2mm, draw=blue, fill=blue!20, rounded corners, inner sep=4pt, rectangle] at ($(theta.south west)!.5!(belowcircuit)$) {{%
+          \onslide<+->{\textcolor{blue}{$\ket{0}\ket{0}$}}%
+          \onslide<+->{\textcolor{red!80!black}{$\Rightarrow \sum_x\ket{x}\ket{0}$}}%
+          \onslide<+->{\textcolor{green!30!black}{$\Rightarrow \sum_x\ket{x}\ket{f_k(x)}$}}%
+          \onslide<+->{\textcolor{green!30!black}{$= \sum_y (\ket{x} + \ket{x'}) \otimes \ket{y}$}}%
+          \onslide<+->{\textcolor{purple}{$\Rightarrow (\ket{x} + \ket{x'}) \otimes \ket{y}$}}%
+          \onslide<+->{\textcolor{orange!80!black}{$\Rightarrow \left(\bigotimes_i \ket{b_i}\right) \otimes \ket{+_\theta} \otimes \ket{y}$}}%
+        }};}
+  \end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

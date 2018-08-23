@@ -178,189 +178,47 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{QFactory: Construction}
-  TODO: I'll put here the slides on the construction of the function.
-\end{frame}
+\subsection{Construction}
 
-\begin{frame}{Construction of QFactory}
-  \begin{block}{Main Theorem (informal)}
-    Assuming the existence of a family of functions $F$ such that:
-    \begin{itemize}
-    \item it is efficient to invert a function from this family when you know a secret $s$;
-    \item it is hard to invert the function without the knowledge of $s$
-    \item each function has exactly 2 preimages for each value in the function's image;
-    \end{itemize}
-    then we can \textbf{classically delegate any quantum computation}.
-  
-    $F$ is known as a family of \textit{2-regular trapdoor one-way functions}. \\
-    
-  \end{block}
-\end{frame}
-
-\subsection{Superposition Stage}
-\begin{frame}[label=current]{Construction of QFactory}
-  Initial state :\\
-  \cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}%
-  \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
-\end{frame}
-\begin{frame}[label=current]{Construction of QFactory}
-  \begin{columns}[onlytextwidth]
-    \begin{column}{.7\textwidth}
-      Superposition :\\
-      \hspace{.04\textwidth}\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}%
-      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
-      + \cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{11}%
-      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
-      + \cqubit{00}\cotimes\cqubit{11}\cotimes\cqubit{00}%
-      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
-      + \cqubit{00}\cotimes\cqubit{11}\cotimes\cqubit{11}%
-      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
-      + \dots \strut\\
-      + \cqubit{11}\cotimes\cqubit{11}\cotimes\cqubit{11}%
-      \cotimes\cqubit{00}\cotimes\cqubit{00}\cotimes\cqubit{00}\\
-    \end{column}
-    \begin{column}{.3\textwidth}
-      \only<2>{
-        \begin{align*}
-          \ket{\phi}
-          &= \ket{0}\otimes\ket{000}\\
-          &~ + \ket{1}\otimes\ket{000}\\
-          &~ + \ket{2}\otimes\ket{000}\\
-          &~ + \ket{3}\otimes\ket{000}\\
-          &~ + \ket{4}\otimes\ket{000}\\
-          &~ + \ket{5}\otimes\ket{000}\\
-          &~ + \ket{6}\otimes\ket{000}\\
-          &~ + \ket{7}\otimes\ket{000}\\
-          &= \sum_{i=0}^{2^n-1} \ket{i}\otimes\ket{0}
-        \end{align*}
-      }
-    \end{column}
-  \end{columns}
-\end{frame}
-\abovedisplayskip=7pt
-\abovedisplayshortskip=7pt
-\belowdisplayskip=7pt
-\belowdisplayshortskip=7pt
-
-\subsection{Application of $f$ Stage}
-\begin{frame}[label=current]{Application of $f$ Stage}
-  \begin{columns}
-    \begin{column}{.4\textwidth}
-      \begin{block}{Projection}
-        Server applies the following unitary $U_f$:
-        \begin{align*}
-        & \ket{x}\otimes\ket{0} \xrightarrow{U_f} \ket{x}\otimes\ket{f(x)}
-        \end{align*}
-        Applying $U_f$ on the previous superposition, results in:
-        \begin{align*}
-          & \sum_{i=0}^{2^n-1} \ket{i}\otimes\ket{0}\\
-          \xrightarrow{U_f} & \sum_{i=0}^{2^n-1} \ket{i}\otimes\ket{f(i)}
-        \end{align*}
-        Then, the server measures the second register (in the computational basis), obtaining the measurement result a classical string $y \in Imf$, and the resulting state after the measurement is: 
-        \begin{align*}
-          (\ket{x_1} + \ket{x_2})\otimes\ket{y}
-        \end{align*}
-        % \vspace{-1cm}\\
-        then he sends $y$ to the client.
-      \end{block}
-    \end{column}
-    \vrule{}
-    \quad
-   
-    \begin{column}{.5\textwidth}
-    
-      Example:
-      \begin{align*}
-        \ket{\phi'}
-        &= \xxcancel<2>{\ket{0}\otimes\textcolor{red}{\ket{4}}}\\
-        &~+ \ket{1}\otimes\textcolor{blue}{\ket{2}}\\
-        &~+ \xxcancel<2>{\ket{2}\otimes\textcolor{green}{\ket{6}}}\\
-        &~+ \xxcancel<2>{\ket{3}\otimes\textcolor{red}{\ket{4}}}\\
-        &~+ \xxcancel<2>{\ket{4}\otimes\textcolor{orange}{\ket{8}}}\\
-        &~+ \xxcancel<2>{\ket{5}\otimes\textcolor{green}{\ket{6}}}\\
-        &~+ \xxcancel<2>{\ket{6}\otimes\textcolor{orange}{\ket{8}}}\\
-        &~+ \ket{7}\otimes\textcolor{blue}{\ket{2}}
-      \end{align*}
-      \uncover<2>{Mesure un 2: $(\ket{1} + \ket{7})\otimes\textcolor{blue}{\ket{2}}$}
-    \end{column}
-   
-  \end{columns}
-\end{frame}
-
-\subsection{Squeezing Stage}
-\begin{frame}[label=current]{Construction}
-  \Wider{
-    \begin{block}{Squeezing Stage}
-      
-      Tranformation: $n$ qubit state $\ket{x_1} + \ket{x_2}$ $\rightarrow$ 1 qubit state $\ket{+_\theta}$\\
-      Algorithm:
-      \begin{itemize}
-      \item Client chooses at random $\alpha_i \in \{0,1\}^3$ and sends $\alpha_i$ to the Server for $i \in \{1, 2, ..., n-1\}$ ;
-      \item Server measures each on the first $n - 1$ qubits of the state $\ket{x_1} + \ket{x_2}$ in the basis $\{\ket{+_{\alpha_i\frac{\pi}{4}}}, \ket{-_{\alpha_i \frac{\pi}{4}}}\}$, obtaining measurement results $b_i$, which he sends back to the Client;
-      \end{itemize}
-      Result: The last (unmeasured) qubit is in the state $\ket{+_\theta}$, where:
-      \begin{equation*}
-        \theta = \frac{\pi}{4}(-1)^{x_{1,n}} \sum_{i = 1}^{n - 1} (x_{1,i} - x_{2,i})(4b_i + \alpha_i) \bmod 8
-      \end{equation*}
-      Client (using the secret $s$) can efficiently compute $\theta$, while $\theta$ looks completely random to the Server. 
-    \end{block}
-  }
-\end{frame}
-
-
-\subsection{Conclusions}
-\begin{frame}{Summary of Results}
-    \begin{figure}[ht]
+\begin{frame}[t]{Construction}
+  \begin{figure}[ht]
     \centering
-    \begin{tikzpicture}[scale=0.5,node distance=.5, every node/.style={rounded corners}]
-      \node[draw=black,fill=white,](init){Initialisation : $\ket{000000}$};
-      \node[draw=red,fill=red!50,below= of init](superposition){Superposition : $(\ket{0}+\ket{1}+\dots+\ket{7}) \otimes \ket{000}$};
-      \node[draw=green,fill=green!50,below= of superposition](appf){Application of f : $\ket{0}\ket{f(0)}+\dots+\ket{7}\ket{f(7)}$};
-      \node[draw=yellow,fill=yellow!50,below= of appf](projection){Projection : $(\ket{x_1} + \ket{x_2}) \otimes \ket{y}$};
-      \node[draw=blue,fill=blue!50,below= of projection](squeezing){Squeezing : $\ket{+_\theta}$};
-      % Flèches
-      \draw[-latex] (init) to (superposition);
-      \draw[-latex] (superposition) to (appf);
-      \draw[-latex] (appf) to (projection);
-      \draw[-latex] (projection) to (squeezing);
-    \end{tikzpicture}
-    \caption{Summary of Construction}
+    \includepdfpageswidth{\linewidth}{figures/slides_qfactory/protocol_explanation.pdf}
+    % TODO: enlarge the slide and remove margins
   \end{figure}
 \end{frame}
 
-\begin{frame}[label=current]{Circuit of QFactory}
-  \begin{tikzpicture}[remember picture,overlay]
-    \draw[fill=red!40] ($(current page.south west)+(1.2,6.8)$)
-    rectangle  ($(current page.south west)+(1.65,2.8)$);
-    \draw[draw=green!40, fill=green!40] ($(current page.south west)+(1.86,0.71)$)
-    rectangle  ($(current page.south west)+(3.42,6.67)$);
-    \draw[fill=yellow!40] ($(current page.south west)+(3.61,0.61)$)
-    rectangle  ($(current page.south west)+(4.18,2.39)$);
-    \draw[fill=blue!40] ($(current page.south west)+(4.22,2.71)$)
-    rectangle  ($(current page.south west)+(12.18,6.98)$);
-  \end{tikzpicture}
-  \resizebox{\textwidth}{!}{%
-    \Qcircuit @C=1em @R=2em {
-      \lstick{\ket{0}} & \gate{H} & \multigate{7}{\qquad U_{f_s}\qquad} & \qw    & \ctrl{1} & \gate{R(-\alpha_1)} & \gate{H}            & \meter   &          &                                  &          &       \\
-      \lstick{\ket{0}} & \gate{H} & \ghost{\qquad U_{f_s} \qquad}       & \qw    & \gate{Z} & \ctrl{1}            & \gate{R(-\alpha_2)} & \gate{H} & \meter   &                                  &          &       \\
-      \lstick{\ket{0}} & \gate{H} & \ghost{\qquad U_{f_s} \qquad}       & \qw    & \qw      & \gate{Z}            &                     &          &          &                                  &          &       \\
-      \lstick{\vdots}  & \vdots   &                                     & \vdots &          &                     & \vdots              &          & \ctrl{1} & \gate{R(-\alpha_{n-1})}          & \gate{H} & \meter \\
-      \lstick{\ket{0}} & \gate{H} & \ghost{\qquad U_{f_s} \qquad}       & \qw    & \qw      & \qw                 & \dots               &          & \gate{Z} & \measuretab{\mbox{Output qubit}} &          &       \\
-      \lstick{\ket{0}} & \qw      & \ghost{\qquad U_{f_s} \qquad}       & \meter &          &                     &                     &          &          &                                  &          &       \\
-      \lstick{\vdots}  & \vdots   &                                     & \vdots &          &                     &                     &          &          &                                  &          &       \\ 
-      \lstick{\ket{0}} & \qw      & \ghost{\qquad U_{f_s} \qquad}       & \meter &          &                     &                     &          &          &                                  &          &       \\
-    }
-  }
+\section{Security}
+
+\begin{frame}[t]{Hidden GHZ State}
+  \begin{figure}[ht]
+    \centering
+    TODO: put the pictures with the GHZ state
+  \end{figure}
 \end{frame}
 
-\begin{frame}{Conclusions and Future Work}
-  
+\begin{frame}[t]{Hardcore function and Honest-but-curious setting}
+  \begin{figure}[ht]
+    \centering
+    TODO: draw with cryptocode the game that we proved secure
+  \end{figure}
+\end{frame}
+
+
+\section{Conclusion}
+\begin{frame}{Summary and future work}
+    \begin{figure}[ht]
+      \centering
+      TODO: Write a summary/future work
+  \end{figure}
 \end{frame}
 
 \begin{frame}{Questions}
   \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{figures/merci.jpg}
+    Thank you for your attention!\\
+    Any question?
+    %% TODO: not beautifull
   \end{figure}
 \end{frame}
 

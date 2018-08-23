@@ -1,12 +1,13 @@
 \documentclass[beamer,tikz,preview]{standalone}
 \input{../../includes.tex}
+
 \graphicspath{{../}}
 
 \newcommand{\drawHelpGrid}[2]{
   % -      #1          #2
   % Number of wires, Length
   \foreach \i in {1,...,#1}{
-    \node at (-.5,-\i) {\i};
+    \node at (-1,-\i) {\i};
   }
   \foreach \i in {1,...,#2}{
     \node at (\i,0) {\i};
@@ -33,7 +34,7 @@
   %     #1           #2           #3
   %     Wire number, Wire name, params
   \coordinate (currwirecoord) at (1,-#1);
-  \node[left=1mm of currwirecoord] {#2};
+  \node[left=1mm of currwirecoord,#3] {#2};
 }
 
 \tikzset{
@@ -69,40 +70,65 @@
 }
 
 \begin{document}
-\begin{standaloneframe}
+\begin{standaloneframe}[fragile]
   \begin{tikzpicture}[
       gate/.style={rectangle,draw,fill=white},
       x=8mm,
+      my fit/.style={rectangle,rounded corners,dashed,draw,fill=#1},
+      my small fit/.style={my fit=#1,inner sep=.5pt}
       ]
-    \drawHelpGrid{6}{10}
+    % \drawHelpGrid{6}{10}
     % Name wires
-    \foreach \i in {1,3,4,6}{
-      \defWireValue{\i}{$\ket{0}$}
+    \foreach \i in {1,3,4,5,7}{
+      \defWireValue{\i}{$\ket{0}$}{name=wire-\i}
     }
     \defWireValue{2}{\vdots\hphantom{$\rangle$\,}}{}
-    \defWireValue{5}{\vdots\hphantom{$\rangle$\,}}{}
+    \defWireValue{6}{\vdots\hphantom{$\rangle$\,}}{}
+    \draw[decorate,decoration={brace,mirror,amplitude=1.5mm}] (wire-1.north west) -- (wire-4.south west) node[midway,auto,swap,xshift=-1mm]{$n$};
+    \draw[decorate,decoration={brace,mirror,amplitude=1.5mm}] (wire-5.north west) -- (wire-7.south west) node[midway,auto,swap,xshift=-1mm]{$m$};
     % Draw wires
-    \def\totalLengthwires{10}
-    \drawWires{1}{1}{1}{\totalLengthwires}
+    \drawWires{1}{1}{1}{6}
     \drawCharWire{2}{1}{2}{$\vdots$}
-    \drawWires{3}{1}{1}{\totalLengthwires}
-    \drawWires{4}{1}{1}{5}
-    \drawCharWire{5}{1}{2}{$\vdots$}
-    \drawWires{6}{1}{1}{5}
+    \drawWires{3}{1}{1}{6}
+    \drawWires{4}{1}{1}{7}
+    \drawWires{5}{1}{1}{5}
+    \drawCharWire{6}{1}{2}{$\vdots$}
+    \drawWires{7}{1}{1}{5}
 
     % %% Gates
     % H
-    \drawGate{1}{2}{H}{}
+    \drawGate{1}{2}{H}{name=firstH}
     \drawGate{3}{2}{H}{}
+    \drawGate{4}{2}{H}{name=lastH}
     % U
-    \drawBigGate{1}{3}{6}{2}{$U_{f_k}$}{}
+    \drawBigGate{1}{3}{7}{2}{$U_{f_k}$}{name=gateUfk}
     % Measure y
-    \drawMeasurement{6}{6}{name=meas1}
-    \drawVDots{5}{6}
-    \drawMeasurement{4}{6}{name=meas1}
+    \drawMeasurement{5}{6}{name=meas1}
+    \drawVDots{6}{6}
+    \drawMeasurement{7}{6}{name=meas2}
+    \draw[decorate,decoration={brace,amplitude=1.5mm,raise=1mm}] (meas1.north east) -- (meas2.south east) node[midway,auto,xshift=2mm] (myy) {$\Rightarrow y$};
     % Measure y
-    
+    \drawGate{1}{7}{$M_{\alpha_1}$}{name=measAlpha1}
+    \drawVDots{2}{7}
+    \drawGate{3}{7}{$M_{\alpha_{n-1}}$}{name=measAlpha2}   
+    % \node[above=1mm of measAlpha1]{$\Rightarrow b_1$};
+    % \node[right=1mm of measAlpha2]{$\Rightarrow b_{n-1}$};
 
+    %% Fit boxes
+    \begin{pgfonlayer}{background}
+      \setcounter{beamerpauses}{2}
+      \onslide<+>{\node[my small fit=blue!30,fit=(wire-1)(wire-7)]{};}
+      \onslide<+>{\node[my fit=red!30,fit=(firstH)(lastH)]{};}
+      % U_f: Takes two slides
+      \onslide<+>{\node[my fit=green!30,fit=(gateUfk)]{};}
+      \onslide<+>{\node[my fit=green!30,fit=(gateUfk)]{};}
+      % Measures
+      \onslide<+>{\node[my fit=purple!30,fit=(myy)(meas1)(meas2)]{};}
+      \onslide<+>{\node[my fit=yellow!30,fit=(measAlpha1)(measAlpha2)]{};}
+    \end{pgfonlayer}
+    % \onslide<+>{\node[below=1mm of gateUfk, draw, rounded corners, rectangle, decorate, decoration=zigzag]{$\Rightarrow$ Produces $\ket{+_\theta}$};}
+    \onslide<+->{\node[below=3mm of gateUfk, draw, fill, inner color=red!80,outer color=orange!80,decorate,ellipse,decoration={random steps,zigzag,,segment length=2mm,amplitude=1mm}] {$\Rightarrow$ Produces $\ket{+_\theta}$};}
+    
   \end{tikzpicture}
 \end{standaloneframe}
 \end{document}

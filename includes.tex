@@ -63,6 +63,7 @@
 \usetikzlibrary{mindmap,backgrounds,positioning}
 \usetikzlibrary{automata,positioning,fit,backgrounds}
 \usetikzlibrary{positioning,arrows,matrix,calc,math}
+\usepgflibrary{decorations.pathreplacing}
 \usetikzlibrary{decorations.pathmorphing}
 
 
@@ -95,7 +96,7 @@
   keys
   ] {cryptocode}
 
-
+\renewcommand{\sample}[0]{\xleftarrow{\text{\tiny \$}}}
 
 \usepackage[skins,many]{tcolorbox}
 \newtcolorbox{subproof}{
@@ -148,16 +149,41 @@
 \newcommand{\includepdfpages}[1]{%
   \pdfximage{#1}%
   \foreach \ov in {1,...,\the\pdflastximagepages}{%
-    \includegraphics<\ov>[page=\ov]{#1}%
+    \includegraphics<+>[page=\ov]{#1}%
   }%
 }
 
 \newcommand{\includepdfpageswidth}[2]{%
   \pdfximage{#2}%
   \foreach \ov in {1,...,\the\pdflastximagepages}{%
-    \includegraphics<\ov>[page=\ov,width=#1]{#2}%
+    \includegraphics<+>[page=\ov,width=#1]{#2}%
   }%
 }
+
+\newcommand{\includetikzpdfpageswidth}[3]{%
+  \pdfximage{#2}%
+  \foreach \ov in {1,...,\the\pdflastximagepages}{%
+    \onslide<+>{\node[#3]{\includegraphics[page=\ov,width=#1]{#2}};}%
+  }%
+}
+
+\newcommand{\includetikzpdfpages}[2]{%
+  \pdfximage{#1}%
+  \foreach \ov in {1,...,\the\pdflastximagepages}{%
+    \onslide<+>{\node[#2]{\includegraphics[page=\ov]{#1}};}%
+  }%
+}
+
+\newcommand{\includetikzpdfpageskeeplast}[2]{%
+  \pdfximage{#1}%
+  \pgfmathparse{\the\pdflastximagepages-1}
+  \foreach \ov in {1,...,\pgfmathresult}{%
+    \onslide<+>{\node[#2]{\includegraphics[page=\ov]{#1}};}%
+  }%
+  \onslide<+->{\node[#2]{\includegraphics[page=\the\pdflastximagepages]{#1}};}%
+}
+
+
 
 %%% Local Variables:
 %%% mode: latex
