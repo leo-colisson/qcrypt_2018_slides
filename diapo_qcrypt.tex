@@ -11,6 +11,7 @@
 \documentclass[]{beamer}
 
 \input{includes.tex}
+\usepackage{blindtext, multicol}
 
 % \usepackage{thmtools}
 % \let\definition\relax
@@ -22,10 +23,10 @@
 \setbeamerfont{subsection in toc}{size=\small}
 \AtBeginSection[]
 {
-  \begin{frame}<beamer>
-    \frametitle{Plan}
-    \tableofcontents[currentsection]
-  \end{frame}
+  % \begin{frame}<beamer>
+  %   \frametitle{Plan}
+  %   \tableofcontents[currentsection]
+  % \end{frame}
 }
 
 \defbeamertemplate*{footline}{shadow theme}{%
@@ -180,32 +181,70 @@
 
 \subsection{Construction}
 
-\begin{frame}[t]{Construction}
-  \begin{figure}[ht]
-    \centering
-    \includepdfpageswidth{\linewidth}{figures/slides_qfactory/protocol_explanation.pdf}
-    % TODO: enlarge the slide and remove margins
-  \end{figure}
+\begin{frame}[t]{Construction}%
+  \vspace{-4mm}%
+  \begin{columns}
+    \column{\dimexpr\paperwidth-10pt}
+    \begin{figure}[ht]
+      \centering
+      \includepdfpageswidth{1\textwidth}{figures/slides_qfactory/protocol_explanation.pdf}
+      % TODO: enlarge the slide and remove margins
+    \end{figure}
+  \end{columns}
 \end{frame}
 
 \section{Security}
 
-\begin{frame}[t]{Hidden GHZ State}
+\subsection{Hidden GHZ State and $\theta$}
+\begin{frame}[t]{Hidden GHZ State and $\theta$}
   \begin{figure}[ht]
-    \centering
-    TODO: put the pictures with the GHZ state
+    \centering%
+    \foreach \x in {1,2,3,4}{%
+      \only<\x>{\includegraphics[width=.6\textwidth]{figures/ghz_\x.pdf}}%
+    }%
   \end{figure}
 \end{frame}
 
-\begin{frame}[t]{Hardcore function and Honest-but-curious setting}
-  \begin{figure}[ht]
-    \centering
-    TODO: draw with cryptocode the game that we proved secure
-  \end{figure}
+\subsection{Hardcore function and Honest-but-curious model}
+\begin{frame}[t]{Hardcore function and Honest-but-curious model}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+    \begin{figure}[ht]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,rectangle,rounded corners,align=center,text width=2.5cm,minimum height=2.5cm,fill=blue!30] (adv) {Adversary};
+        \coordinate (m) at ($(adv.north west)!.5!(adv.south west)$);
+        \draw[arrows = {-Stealth[scale=1]}] ([xshift=-2cm]m) -- (m)
+        node[midway,above,scale=.75] (ky) {$k,y,(\alpha_i),(b_i)$};
+        \draw[arrows = {-Stealth[scale=1]}, double distance=1.5pt] (adv.south) -- ([yshift=-1cm]adv.south)
+        node[below] {$\theta'$};
+        % Center the picture
+        % \coordinate () at ;
+        \path[] (adv.north east) -- ([xshift=3cm]adv.north east);
+      \end{tikzpicture}%
+    \end{figure}
+    Cannot be better than random guess: $\theta$ \textbf{hardcore} function.
+  \end{column}%
+  % 
+  \begin{column}{.5\textwidth}
+    \begin{exampleblock}{Honest-but-curious model}
+      Corollary: secure in the
+      honest-but-curious model.\\
+      If adversary:
+      \begin{itemize}
+      \item follows the protocol
+      \item can only access classical registers
+      \end{itemize}
+      $\Rightarrow $ he cannot guess $\theta$
+    \end{exampleblock}
+  \end{column}
+\end{columns}
 \end{frame}
 
-
-\section{Conclusion}
+% TODO: Enable math font in beamer
+% TODO: Add slides to answer questions
+% TODO: Compare work Urmila
+\section{}
 \begin{frame}{Summary and future work}
     \begin{figure}[ht]
       \centering
