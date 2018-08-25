@@ -92,12 +92,20 @@
         \colorlet{color max hsb}[hsb]{magenta}
         \def\bl{90}
         \colorlet{colorA}[rgb]{color max hsb!0!color min hsb!\bl!black}
-        \colorlet{colorB}[rgb]{color max hsb!20!color min hsb!\bl!black}
-        \colorlet{colorC}[rgb]{color max hsb!40!color min hsb!\bl!black}
-        \colorlet{colorD}[rgb]{color max hsb!60!color min hsb!\bl!black}
-        \colorlet{colorE}[rgb]{color max hsb!80!color min hsb!\bl!black}
-        \colorlet{colorF}[rgb]{color max hsb!100!color min hsb!\bl!black}
-        
+        \colorlet{colorB}[rgb]{color max hsb!17!color min hsb!\bl!black}
+        \colorlet{colorC}[rgb]{color max hsb!33!color min hsb!\bl!black}
+        \colorlet{colorD}[rgb]{color max hsb!50!color min hsb!\bl!black}
+        \colorlet{colorE}[rgb]{color max hsb!67!color min hsb!\bl!black}
+        \colorlet{colorF}[rgb]{color max hsb!83!color min hsb!\bl!black}
+        \colorlet{colorG}[rgb]{color max hsb!100!color min hsb!\bl!black}
+
+        % \colorlet{colorA}[rgb]{color max hsb!0!color min hsb!\bl!black}
+        % \colorlet{colorB}[rgb]{color max hsb!20!color min hsb!\bl!black}
+        % \colorlet{colorC}[rgb]{color max hsb!40!color min hsb!\bl!black}
+        % \colorlet{colorD}[rgb]{color max hsb!60!color min hsb!\bl!black}
+        % \colorlet{colorE}[rgb]{color max hsb!80!color min hsb!\bl!black}
+        % \colorlet{colorF}[rgb]{color max hsb!100!color min hsb!\bl!black}
+
         \path[mindmap,
           every node/.style={concept, circular drop shadow,execute at begin node=\hskip0pt},
           concept color=black,text=black,font=\bfseries,
@@ -105,7 +113,7 @@
           root concept/.append style={
             concept color=black, fill=white, line width=1ex, text=black,
             font=\large\scshape},
-          level 1 concept/.append style={sibling angle=180/5}]
+          level 1 concept/.append style={sibling angle=180/6}]
         
         node[concept, root concept] {Simulate quantum channel}
         child[concept color=colorA] {
@@ -126,6 +134,9 @@
           node[concept] {Key distribution}
         }
         child[concept color=colorF] {
+          node[concept] {Certified qubit}
+        }
+        child[concept color=colorG] {
           node[concept] {\dots}
         };
       \end{tikzpicture}
@@ -241,15 +252,25 @@
 \end{columns}
 \end{frame}
 
-% TODO: Enable math font in beamer
 % TODO: Add slides to answer questions
 % TODO: Compare work Urmila
 \section{}
 \begin{frame}{Summary and future work}
-    \begin{figure}[ht]
-      \centering
-      TODO: Write a summary/future work
-  \end{figure}
+  \begin{block}{Summary}
+    \begin{itemize}
+    \item QFactory: simulate quantum channel from classical channel
+    \item \tcancel{quantum client} $\rightarrow$ classical clients:\\Applications: classically driven blind quantum computing\dots
+    \item improve/create new schemes
+    \item For now, proof in honest-but-curious model
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Future work}
+    \begin{itemize}
+    \item Improve proof of security in Universal Composability model
+    \item Improve efficiency in blind computing
+    \item Explore new possible applications, certified qubits (QFactory + Zero Knowledge proof) that could improve MPC\dots
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Questions}
