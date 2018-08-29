@@ -41,7 +41,7 @@
   default gate/.style={draw,rectangle,anchor=center,fill=white},
   measure/.pic={
     \draw[thick,line cap=round,line width=.2mm] (0,-3.2mm) + (90+35:3mm) arc[x radius=3mm, y radius=3mm, start angle=90+35, end angle=90-35];
-    \draw[thick,line cap=round,line width=.2mm] (0,-1mm) -- (45:2.2mm);
+    \draw[thick,line cap=round,line width=.2mm,-{Latex[scale=.5]}] (0,-1mm) -- (45:2.2mm);
   },
 }
 \newcommand{\drawGate}[4]{
@@ -62,6 +62,14 @@
   % - #1,   #2      #3
   % wire, length, options (name...)
   \node[draw,fill=white,#3] at (#2,-#1) {\phantom{H}};
+  \pic at (#2,-#1) {measure};
+}
+
+\newcommand{\drawMeasurementAlpha}[4]{
+  % - #1,   #2      #3
+  % wire, length, options (name...)
+  \node[draw,fill=white,#4] (mainnode) at (#2,-#1) {\phantom{H}};
+  \node[fill=white,draw,scale=.55,rounded corners] at (mainnode.south) {#3};
   \pic at (#2,-#1) {measure};
 }
 
@@ -108,11 +116,12 @@
     \drawMeasurement{7}{6}{name=meas2}
     \draw[decorate,decoration={brace,amplitude=1.5mm,raise=1mm}] (meas1.north east) -- (meas2.south east) node[midway,auto,xshift=2mm] (myy) {$\Rightarrow y$};
     % Measure y
-    \drawGate{1}{7}{$M_{\alpha_1}$}{name=measAlpha1}
+    % \drawGate{1}{7}{$M_{\alpha_1}$}{name=measAlpha1}
+    \drawMeasurementAlpha{1}{7}{$\alpha_1$}{alias=measAlpha1}
     \drawVDots{2}{7}
-    \drawGate{3}{7}{$M_{\alpha_{n-1}}$}{name=measAlpha2}   
-    % \node[above=1mm of measAlpha1]{$\Rightarrow b_1$};
-    % \node[right=1mm of measAlpha2]{$\Rightarrow b_{n-1}$};
+    \drawMeasurementAlpha{3}{7}{$\alpha_{n-1}$}{alias=measAlpha2}
+    \node[right=1mm of measAlpha1,scale=.7]{$b_1$};
+    \node[right=1mm of measAlpha2,scale=.7]{$b_{n-1}$};
 
     %% Fit boxes
     \begin{pgfonlayer}{background}

@@ -1,14 +1,10 @@
-% Notes
-% ========== Introduction
-% - Ordinateur quantiques, n'existent pas encore ==> Rajouter une slide sur les ordinateurs quantiques
-% - Parler de Bob = serveur
-% - Qubits servent à cacher les calculs. Alice doit avoir un petit ordinateur quantique
-
-% TODO : mettre la photo du qubit à l'étape précédente
-% TODO : Animation avec le plus qui s'ouvre
-% TODO : boite noire ?
-
 \documentclass[]{beamer}
+
+%% Good expressions:
+%% UBQC: include rotated qubits in the graph
+%% Measure n-1 qubits
+
+%% Sécurité: blindness of the output (theta hidden)
 
 \input{includes.tex}
 \usepackage{blindtext, multicol}
@@ -63,19 +59,25 @@
 \end{frame}
 % ==================================================
 
-\begin{frame}
-  \tableofcontents
-\end{frame}
+% \begin{frame}
+%   \tableofcontents
+% \end{frame}
 
 % ==================================================
 
 \section{Motivations}
 
 \subsection{Main Goal}
-%TODO: use a string of 0100 on the straight line to emphasize classical comm (on te 2 pictures)
+
+\begin{frame}{Robin Hood}
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=.8\textwidth]{figures/robin_hood.png}
+  \end{figure}
+\end{frame}
+
+
 %TODO: also if time I would say to add on Alice's side a small quantum device for the q comm - see Ur slides
-%% TODO: Robinhood
-%% TODO: Write N = pq on top of alice
 \begin{frame}{Main Goal}
   \begin{figure}[ht]
     \centering
@@ -84,18 +86,167 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{Motivations}
-  \begin{block}{Why classical client?}
-    \begin{itemize}
-    \item Quantum internet = Money \textbf{TODO : nice images}
-    \item Quantum computer ``networkable''?
-    \end{itemize}
-  \end{block}
+\subsection{Motivations}
+
+\begin{frame}{Motivations: Why classical client?}
+  \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+      \node(money) {\includegraphics[height=.5\textheight]{figures/money.png}};
+      \node[right=1cm of money] {\includegraphics[height=.5\textheight]{figures/bad_plug.png}};
+    \end{tikzpicture}
+  \end{figure}
 \end{frame}
 
-\subsection{Applications of QFactory}
+\subsection{UBQC in a nutshell}
 
-\begin{frame}{Other Applications}
+\begin{frame}{Our solution}
+  \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+      \node[align=center] (ubqc) {Universal Blind Quantum Computing (UBQC)\\{[A. Broadbent, J. Fitzsimons, E. Kashefi]}};
+      \node[below=1mm of ubqc,scale=2] (plus) {+};
+\node[below=1mm of plus, rounded corners,fill=blue!50,inner sep=2pt,label={[blue!60]below:QFactory}] (factory) {\includegraphics[width=15mm]{figures/factory.png}};
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{UBQC in a nutshell}
+  \begin{figure}[ht]
+    \centering
+    \includepdfpages{figures/slides_ubqc_nutshell/slides_ubqc_nutshell.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{UBQC in a nutshell}
+  \begin{figure}[ht]
+    \centering
+        \includepdfpages{figures/slides_ubqc_nutshell/slides_ubqc_nutshell_alice_bob.pdf}
+  \end{figure}
+\end{frame}
+
+\section{QFactory}
+
+\subsection{Description of the QFactory gadget}
+
+\begin{frame}{QFactory: description}
+  \begin{figure}[ht]
+    \centering
+    \includepdfpages{figures/slides_qfactory/replacement.pdf}
+    \caption{QFactory gadget: simulate quantum channel}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{QFactory: description}
+  \begin{figure}[ht]
+    \centering
+    \includepdfpages{figures/slides_qfactory/ideal_functionality.pdf}
+    \caption{QFactory: ideal functionality}
+  \end{figure}
+\end{frame}
+
+\subsection{Cryptographic assumptions}
+
+\begin{frame}{Cryptographic assumptions}
+  \begin{figure}[ht]
+    \centering
+    \includepdfpageswidth{\linewidth}{figures/slides_qfactory/cryptographic_assumptions.pdf}
+  \end{figure}
+\end{frame}
+
+\subsection{Construction}
+
+\begin{frame}[t]{Construction}%
+  \vspace{-4mm}%
+  \begin{columns}
+    \column{\dimexpr\paperwidth-10pt}
+    \begin{figure}[ht]
+      \centering
+      \includepdfpageswidth{1\textwidth}{figures/slides_qfactory/protocol_explanation.pdf}
+    \end{figure}
+  \end{columns}
+\end{frame}
+
+\section{Security}
+
+\subsection{Hidden GHZ State and $\theta$}
+\begin{frame}[t]{Hidden GHZ State and $\theta$}
+  \begin{figure}[ht]
+    \centering%
+    \foreach \x in {1,2,3,4}{%
+      \only<\x>{\includegraphics[width=.6\textwidth]{figures/ghz_\x.pdf}}%
+    }%
+  \end{figure}
+\end{frame}
+
+% \begin{frame}{Intuition security}
+%   TODO: Intuition security, PostBQP...
+% \end{frame}
+
+\subsection{Hardcore function and Honest-but-curious model}
+\begin{frame}[t]{Hardcore function and Honest-but-curious model}
+  \begin{columns}
+    \begin{column}{.5\textwidth}
+    \begin{figure}[ht]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,rectangle,rounded corners,align=center,text width=2.5cm,minimum height=2.5cm,fill=blue!30] (adv) {Adversary};
+        \coordinate (m) at ($(adv.north west)!.5!(adv.south west)$);
+        \draw[arrows = {-Stealth[scale=1]}] ([xshift=-2cm]m) -- (m)
+        node[midway,above,scale=.75] (ky) {$k,y,(\alpha_i),(b_i)$};
+        \draw[arrows = {-Stealth[scale=1]}, double distance=1.5pt] (adv.south) -- ([yshift=-1cm]adv.south)
+        node[below] {$\theta'$};
+        % Center the picture
+        % \coordinate () at ;
+        \path[] (adv.north east) -- ([xshift=3cm]adv.north east);
+      \end{tikzpicture}%
+    \end{figure}
+    Cannot be better than random guess: $\theta$ \textbf{hardcore} function.
+  \end{column}%
+  % 
+  \begin{column}{.5\textwidth}
+    \begin{exampleblock}{Honest-but-curious model}
+      Corollary: secure in the
+      honest-but-curious model.\\
+      If adversary:
+      \begin{itemize}
+      \item follows the protocol
+      \item can only access classical registers
+      \end{itemize}
+      $\Rightarrow $ he cannot guess $\theta$
+    \end{exampleblock}
+  \end{column}
+\end{columns}
+\end{frame}
+
+%TODO I would suggest adding one slide with the construction(s) of the function as well, maybe also say a bit about MP11
+
+%TODO For the hardcore function slide, maybe we can also write a definition of hardcore or an intuition on why theta should be hardcore (given the GL theorem)
+
+% TODO: Add slides to answer questions
+% TODO: Compare work Urmila
+\section{}
+\begin{frame}{Summary and future work}
+  \begin{block}{Summary}
+    \begin{itemize}
+    \item QFactory: simulate quantum channel from classical channel
+    \item \tcancel{quantum client} $\rightarrow$ classical clients:\\Applications: classically driven (verifiable) blind quantum computing\dots
+    \item For now, proof in honest-but-curious model
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Future work}
+    \begin{itemize}
+    \item Improve proof of security in Universal Composability model
+    \item Improve efficiency in blind computing
+    \item Explore new possible applications, certified qubits (QFactory + Zero Knowledge proof) that could improve MPC\dots
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+% \subsection{Applications of QFactory}
+
+\begin{frame}{Applications of QFactory}
   \begin{figure}[ht]
     \centering
     \scalebox{.7}{
@@ -156,154 +307,13 @@
   \end{figure}
 \end{frame}
 
-\subsection{UBQC in a nutshell}
-
-\begin{frame}{UBQC in a nutshell}
-  \begin{figure}[ht]
-    \centering
-    \includepdfpages{figures/slides_ubqc_nutshell/slides_ubqc_nutshell.pdf}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{UBQC in a nutshell}
-  \begin{figure}[ht]
-    \centering
-        \includepdfpages{figures/slides_ubqc_nutshell/slides_ubqc_nutshell_alice_bob.pdf}
-  \end{figure}
-\end{frame}
-
-\section{QFactory}
-
-\subsection{Description of the QFactory gadget}
-
-%same comment about the drawing here
-\begin{frame}{QFactory: description}
-  \begin{figure}[ht]
-    \centering
-    \includepdfpages{figures/slides_qfactory/replacement.pdf}
-    \caption{QFactory gadget: simulate quantum channel}
-  \end{figure}
-\end{frame}
-
-
-\begin{frame}{QFactory: description}
-  \begin{figure}[ht]
-    \centering
-    \includepdfpages{figures/slides_qfactory/ideal_functionality.pdf}
-    \caption{QFactory: ideal functionality}
-  \end{figure}
-\end{frame}
-
-\subsection{Cryptographic assumptions}
-
-\begin{frame}{Cryptographic assumptions}
-  \begin{figure}[ht]
-    \centering
-    \includepdfpageswidth{\linewidth}{figures/slides_qfactory/cryptographic_assumptions.pdf}
-  \end{figure}
-\end{frame}
-%I think we were using "One-way"
-%I would suggest either changing the post quantum description to "Hard to invert even against quantum computers" or combining it with the one-wayness
-%Either "Funtions {f_k}" or "family function {f_k}"
-\subsection{Construction}
-
-% I think the symbol for measurements has an arrow at the end :p, also maybe we can use the same symbol for M_{alpha_i} and just add the angle as opposed to 0/1 meas
-
-\begin{frame}[t]{Construction}%
-  \vspace{-4mm}%
-  \begin{columns}
-    \column{\dimexpr\paperwidth-10pt}
-    \begin{figure}[ht]
-      \centering
-      \includepdfpageswidth{1\textwidth}{figures/slides_qfactory/protocol_explanation.pdf}
-      % TODO: enlarge the slide and remove margins
-    \end{figure}
-  \end{columns}
-\end{frame}
-
-\section{Security}
-
-\subsection{Hidden GHZ State and $\theta$}
-\begin{frame}[t]{Hidden GHZ State and $\theta$}
-  \begin{figure}[ht]
-    \centering%
-    \foreach \x in {1,2,3,4}{%
-      \only<\x>{\includegraphics[width=.6\textwidth]{figures/ghz_\x.pdf}}%
-    }%
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Intuition security}
-  TODO: Intuition security, PostBQP...
-\end{frame}
-
-\subsection{Hardcore function and Honest-but-curious model}
-\begin{frame}[t]{Hardcore function and Honest-but-curious model}
-  \begin{columns}
-    \begin{column}{.5\textwidth}
-    \begin{figure}[ht]
-      \centering
-      \begin{tikzpicture}
-        \node[draw,rectangle,rounded corners,align=center,text width=2.5cm,minimum height=2.5cm,fill=blue!30] (adv) {Adversary};
-        \coordinate (m) at ($(adv.north west)!.5!(adv.south west)$);
-        \draw[arrows = {-Stealth[scale=1]}] ([xshift=-2cm]m) -- (m)
-        node[midway,above,scale=.75] (ky) {$k,y,(\alpha_i),(b_i)$};
-        \draw[arrows = {-Stealth[scale=1]}, double distance=1.5pt] (adv.south) -- ([yshift=-1cm]adv.south)
-        node[below] {$\theta'$};
-        % Center the picture
-        % \coordinate () at ;
-        \path[] (adv.north east) -- ([xshift=3cm]adv.north east);
-      \end{tikzpicture}%
-    \end{figure}
-    Cannot be better than random guess: $\theta$ \textbf{hardcore} function.
-  \end{column}%
-  % 
-  \begin{column}{.5\textwidth}
-    \begin{exampleblock}{Honest-but-curious model}
-      Corollary: secure in the
-      honest-but-curious model.\\
-      If adversary:
-      \begin{itemize}
-      \item follows the protocol
-      \item can only access classical registers
-      \end{itemize}
-      $\Rightarrow $ he cannot guess $\theta$
-    \end{exampleblock}
-  \end{column}
-\end{columns}
-\end{frame}
-
-%TODO I would suggest adding one slide with the construction(s) of the function as well, maybe also say a bit about MP11
-
-%TODO For the hardcore function slide, maybe we can also write a definition of hardcore or an intuition on why theta should be hardcore (given the GL theorem)
-
-%TODO In the summary I would write more applications that might attract the audience, basically rewriting the applications from your drawing because now it should be clearer after seeing the construction on how QFactory could be used in all these settings
-
-% TODO: Add slides to answer questions
-% TODO: Compare work Urmila
-\section{}
-\begin{frame}{Summary and future work}
-  \begin{block}{Summary}
-    \begin{itemize}
-    \item QFactory: simulate quantum channel from classical channel
-    \item \tcancel{quantum client} $\rightarrow$ classical clients:\\Applications: classically driven (verifiable) blind quantum computing\dots
-    \item For now, proof in honest-but-curious model
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Future work}
-    \begin{itemize}
-    \item Improve proof of security in Universal Composability model
-    \item Improve efficiency in blind computing
-    \item Explore new possible applications, certified qubits (QFactory + Zero Knowledge proof) that could improve MPC\dots
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-
 \begin{frame}{Questions}
   \begin{figure}[ht]
     \centering
     Thank you for your attention!\\
-    Any question?
+    Questions?\\
+    \vspace{2cm}
+    \href{https://arxiv.org/abs/1802.08759}{arxiv.org/abs/1802.08759}
     %% TODO: not beautifull
   \end{figure}
 \end{frame}

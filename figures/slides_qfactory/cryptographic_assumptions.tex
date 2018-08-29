@@ -25,7 +25,7 @@
     \def\boxTwoReg{\begin{tcolorbox}[title=2-Regular]
         2 preimages for all elements in $Im(f_k)$
       \end{tcolorbox}}
-    \def\boxoneway{\begin{tcolorbox}[title=One way]
+    \def\boxoneway{\begin{tcolorbox}[title=One-way]
         This function is hard to invert\dots
       \end{tcolorbox}}
     \def\boxtrapdoor{\begin{tcolorbox}[title=Trapdoor]
@@ -46,14 +46,14 @@
     %   \draw[-latex] (familly) -- (all properties-1-\i.north);
     % }
     % %%   Version carrée
-    \node[my box=orange!60] (family) {Function $\{f_k\}$};
-    \node[above=of family] (b2r) {\boxTwoReg};
+    \node[my box=orange!60] (family) {Functions $\{f_k\}$};
     \node[above left=of family] (bow) {\boxoneway};
     \node[below left=of family] (bt) {\boxtrapdoor};
     \node[below right=of family] (bc) {\boxcollision};
-    \node[above right=of family] (bpc) {\boxpostquantum};
+    \node[above right=of family] (bpc) {\boxTwoReg};
+    % \node[above right=of family] (bpc) {\boxpostquantum};
     % Arrows
-    \foreach \i in {b2r,bow,bt,bc,bpc}{
+    \foreach \i in {bow,bt,bc,bpc}{
       \draw[-latex] (family) -- (\i);
     }
     % Drawing

@@ -7,22 +7,31 @@
   \begin{tikzpicture}
     % Alice
     \node[inner sep=0pt](alice)    {\includegraphics[width=.20\textwidth]{aliceteacup.png}};
+    \node[cloud callout, draw=green!40!black, cloud puffs=15, aspect=2.5, cloud puff arc=120, fill=yellow!50, callout absolute pointer={(alice.north east)}] at ($(alice.north east)+(.4cm,.9cm)$) {\tiny $N= ? \times ?$};
     % Bob
-    \node<1>[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley.jpg}};
+    \node<1-2>[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley.jpg}};
     % Bob Marley aveugle
-    \node<2->[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley_aveugle.jpg}};
+    \node<3->[inner sep=0pt,right=.50\textwidth of alice](bob) {\includegraphics[width=.20\textwidth]{bob_marley_aveugle.jpg}};
     % Petit ordinateur
     \node[inner sep=0pt,below=.04\textwidth of alice](petitordi) {\includegraphics[width=.20\textwidth]{petit_ordinateur.jpg}};
     % Ordinateur quantique
     \node[inner sep=0pt,below=.04\textwidth of bob](ordiquantique) {\includegraphics[width=.35\textwidth]{ordi_quantique.png}};
     % Flèches
-    \draw<1>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west);
-    \draw[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east);
+    % Alice <--- Bob
+    \draw<1,4->[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east)
+    node[midway, above,scale=.75]{10011};
+    \draw<2-3>[-latex] ([yshift=-.04\textwidth]ordiquantique.west |- petitordi.west) -- ([yshift=-.04\textwidth]petitordi.east)
+    node[midway, above,scale=.75]{$p,q$};
+    % Alice ---> Bob
+    \draw<1>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west)
+    node[midway, above,scale=.75]{11010};
+    \draw<2-3>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west)
+    node[midway, above]{\includegraphics[width=10mm]{parchemin.png}};
     % Flèche logo atome
-    \draw<2>[-latex,my snake] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome.png}};
+    \draw<4>[-latex,my snake] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome.png}};
     % Flèche logo atome barré
-    \draw<3>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome_barre.png}};
-    \node<3>[above=.5mm of atome] {{\Large \textbf{\textcolor{red}{?}}}};
+    \draw<5>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome_barre.png}};
+    \node<5>[above=.5mm of atome] {{\Large \textbf{\textcolor{red}{?}}}};
   \end{tikzpicture}
 \end{standaloneframe}
 \end{document}

@@ -22,9 +22,11 @@
     
     \setcounter{beamerpauses}{\beamerpausesbefore}
     \coordinate (belowcircuit) at (theta.south west-|circuit.south east);
-    \onslide<+->{\node[anchor=north, yshift=-2mm, draw=blue, fill=blue!20, rounded corners, inner sep=4pt, rectangle] at ($(theta.south west)!.5!(belowcircuit)$) {{%
-          \onslide<+->{\textcolor{blue}{$\ket{0}\ket{0}$}}%
-          \onslide<+->{\textcolor{red!80!black}{$\Rightarrow \sum_x\ket{x}\ket{0}$}}%
+    % \onslide<+->{\node[anchor=north, yshift=-2mm, draw=blue, fill=blue!20, rounded corners, inner sep=4pt, rectangle] at ($(theta.south west)!.5!(belowcircuit)$) {{%
+    \coordinate (middleTop) at ($(alice.north west)!.5!(circuit.north east)$);
+    \onslide<+->{\node[anchor=north, yshift=-2mm, draw=blue, fill=blue!20, rounded corners, inner sep=4pt, rectangle, above=4mm of middleTop] {{%
+          \onslide<+->{\textcolor{blue}{$\ket{0}^{\otimes n}\ket{0}^{\otimes m}$}}%
+          \onslide<+->{\textcolor{red!80!black}{$\Rightarrow \sum_x\ket{x}\ket{0}^{\otimes m}$}}%
           \onslide<+->{\textcolor{green!30!black}{$\Rightarrow \sum_x\ket{x}\ket{f_k(x)}$}}%
           \onslide<+->{\textcolor{green!30!black}{$= \sum_y (\ket{x} + \ket{x'}) \otimes \ket{y}$}}%
           \onslide<+->{\textcolor{purple}{$\Rightarrow (\ket{x} + \ket{x'}) \otimes \ket{y}$}}%
