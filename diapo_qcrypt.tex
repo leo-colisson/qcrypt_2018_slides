@@ -206,19 +206,34 @@
   \end{column}%
   % 
   \begin{column}{.5\textwidth}
-    \begin{exampleblock}{Honest-but-curious model}
-      Corollary: secure in the
+    \begin{exampleblock}{Security}
+     Blindness of the output $\theta$. \\
+      Corollary: QFactory is secure in the
       honest-but-curious model.\\
       If adversary:
       \begin{itemize}
       \item follows the protocol
       \item can only access classical registers
       \end{itemize}
-      $\Rightarrow $ he cannot guess $\theta$
+      $\Rightarrow $ he cannot determine $\theta$
     \end{exampleblock}
   \end{column}
 \end{columns}
 \end{frame}
+
+\begin{frame}[t]{Hardcore function and Honest-but-curious model}
+$\theta$ is a hardcore function. \\
+Proof based on Goldreich-Levin Theorem:
+\begin{theorem}
+If f is a one-way function, then the predicate $hc(x, r) = \sum x_i r_i \bmod 2$ cannot be distinguished from a random bit. 
+\end{theorem}
+
+Recall, in our case: \\
+$ \theta = \sum (x_i - x_i') (4b_i + \alpha_i) $
+
+
+\end{frame}
+
 
 %TODO I would suggest adding one slide with the construction(s) of the function as well, maybe also say a bit about MP11
 
