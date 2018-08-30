@@ -5,6 +5,21 @@
 \begin{document}
 \begin{standaloneframe}
   \begin{tikzpicture}
+    [
+      cubequantique/.pic={
+        \pgfmathsetmacro{\cubex}{.5}
+        \pgfmathsetmacro{\cubey}{.5}
+        \pgfmathsetmacro{\cubez}{.5}
+        \draw[black,fill=blue!50!black] (\cubex/2,\cubey/2,0) -- ++(-\cubex,0,0) -- ++(0,-\cubey,0) -- ++(\cubex,0,0) -- cycle;
+        \draw[black,fill=blue!50!black] (\cubex/2,\cubey/2,0) -- ++(0,0,-\cubez) -- ++(0,-\cubey,0) -- ++(0,0,\cubez) -- cycle;
+        \draw[black,fill=blue!50!black] (\cubex/2,\cubey/2,0) -- ++(-\cubex,0,0) -- ++(0,0,-\cubez) -- ++(\cubex,0,0) -- cycle;
+        \draw[yellow,thin,rotate=0] (0,0) ellipse (2mm and .5mm);
+        \draw[yellow,thin,rotate=45] (0,0) ellipse (2mm and .5mm);
+        \draw[yellow,thin,rotate=90] (0,0) ellipse (2mm and .5mm);
+        \draw[yellow,thin,rotate=90+45] (0,0) ellipse (2mm and .5mm);
+        \fill[yellow] (0,0) circle (.19mm);
+      }
+      ]
     % Alice
     \node[inner sep=0pt](alice)    {\includegraphics[width=.20\textwidth]{aliceteacup.png}};
     \node[cloud callout, draw=green!40!black, cloud puffs=15, aspect=2.5, cloud puff arc=120, fill=yellow!50, callout absolute pointer={(alice.north east)}] at ($(alice.north east)+(.4cm,.9cm)$) {\tiny $N= ? \times ?$};
@@ -28,7 +43,9 @@
     \draw<2-3>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west)
     node[midway, above]{\includegraphics[width=10mm]{parchemin.png}};
     % Flèche logo atome
-    \draw<4>[-latex,my snake] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome.png}};
+    \coordinate (leftarrow) at ([yshift=.04\textwidth]petitordi.east);
+    \draw<4>[-latex,my snake] (leftarrow) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome.png}};
+    \pic<4> at (leftarrow) {cubequantique};
     % Flèche logo atome barré
     \draw<5>[-latex] ([yshift=.04\textwidth]petitordi.east) -- ([yshift=.04\textwidth]ordiquantique.west |- petitordi.west) node[midway,above] (atome) {\includegraphics[width=.15\textwidth]{atome_barre.png}};
     \node<5>[above=.5mm of atome] {{\Large \textbf{\textcolor{red}{?}}}};

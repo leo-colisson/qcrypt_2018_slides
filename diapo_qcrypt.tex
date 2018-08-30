@@ -77,7 +77,6 @@
 \end{frame}
 
 
-%TODO: also if time I would say to add on Alice's side a small quantum device for the q comm - see Ur slides
 \begin{frame}{Main Goal}
   \begin{figure}[ht]
     \centering
@@ -158,7 +157,7 @@
 \subsection{Construction}
 
 \begin{frame}[t]{Construction}%
-  \vspace{-4mm}%
+  \vspace{-6mm}%
   \begin{columns}
     \column{\dimexpr\paperwidth-10pt}
     \begin{figure}[ht]
@@ -196,13 +195,14 @@
         \draw[arrows = {-Stealth[scale=1]}] ([xshift=-2cm]m) -- (m)
         node[midway,above,scale=.75] (ky) {$k,y,(\alpha_i),(b_i)$};
         \draw[arrows = {-Stealth[scale=1]}, double distance=1.5pt] (adv.south) -- ([yshift=-1cm]adv.south)
-        node[below] {$\theta'$};
+        node[below] (thetaprime) {$\theta'$};
+        \node[inner sep=0pt, right=0pt of thetaprime,yshift=2pt] {$\overset{?}{=} \theta$};
         % Center the picture
         % \coordinate () at ;
         \path[] (adv.north east) -- ([xshift=3cm]adv.north east);
       \end{tikzpicture}%
     \end{figure}
-    Cannot be better than random guess: $\theta$ \textbf{hardcore} function.
+    Cannot be better than random guess: $\theta$ \textbf{hard-core} function.
   \end{column}%
   % 
   \begin{column}{.5\textwidth}
@@ -221,39 +221,40 @@
 \end{columns}
 \end{frame}
 
-\begin{frame}[t]{Hardcore function and Honest-but-curious model}
-$\theta$ is a hardcore function. \\
-Proof based on Goldreich-Levin Theorem:
+
+\subsection{Intuition of proof}
+\begin{frame}{Intuition of proof}
+$\theta$ is a hardcore function: proof based on Goldreich-Levin Theorem:
 \begin{theorem}
-If f is a one-way function, then the predicate $hc(x, r) = \sum x_i r_i \bmod 2$ cannot be distinguished from a random bit. 
+If f is a one-way function, then the predicate $hc(\textcolor{red}{x}, \textcolor{green!60!black}{r}) = \sum \textcolor{red}{x_i} \textcolor{green!60!black}{r_i} \bmod 2$ cannot be distinguished from a random bit, given \textcolor{green!60!black}{$r$} and $\textcolor{blue!60!black}{f(x)}$. 
 \end{theorem}
-
-Recall, in our case: \\
-$ \theta = \sum (x_i - x_i') (4b_i + \alpha_i) $
-
-
+Recall, in our case: \textcolor{blue!60!black}{$f(x) \approx y$} and\\
+$$ \theta \approx \sum \underbrace{\textcolor{red}{(x_i - x_i')}}_{\substack{\text{Unknown} \\ \text{to server}}} \underbrace{\textcolor{green!60!black}{(4b_i + \alpha_i)}}_{\substack{\text{Known} \\ \text{to server}}}\mod 8$$
 \end{frame}
 
 
 %TODO I would suggest adding one slide with the construction(s) of the function as well, maybe also say a bit about MP11
-
-%TODO For the hardcore function slide, maybe we can also write a definition of hardcore or an intuition on why theta should be hardcore (given the GL theorem)
 
 % TODO: Add slides to answer questions
 % TODO: Compare work Urmila
 \section{}
 \begin{frame}{Summary and future work}
   \begin{block}{Summary}
-    \begin{itemize}
-    \item QFactory: simulate quantum channel from classical channel
-    \item \tcancel{quantum client} $\rightarrow$ classical clients:\\Applications: classically driven (verifiable) blind quantum computing\dots
-    \item For now, proof in honest-but-curious model
-    \end{itemize}
+    \begin{minipage}{.6\linewidth}
+      \begin{itemize}
+      \item QFactory: simulate quantum channel from classical channel
+      \item \tcancel{quantum client} $\rightarrow$ classical clients
+      \item For now, proof in honest-but-curious model
+      \end{itemize}      
+    \end{minipage}%
+    \begin{minipage}{.4\linewidth}
+      \includegraphics[width=\textwidth]{figures/money_fille.jpeg}        
+    \end{minipage}
   \end{block}
   \begin{exampleblock}{Future work}
     \begin{itemize}
     \item Improve proof of security in Universal Composability model
-    \item Improve efficiency in blind computing
+    \item Improve efficiency in blind computing (GHZ state\dots)
     \item Explore new possible applications, certified qubits (QFactory + Zero Knowledge proof) that could improve MPC\dots
     \end{itemize}
   \end{exampleblock}
