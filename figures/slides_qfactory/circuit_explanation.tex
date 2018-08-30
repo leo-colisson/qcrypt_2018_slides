@@ -136,8 +136,9 @@
       \onslide<+>{\node[my fit=yellow!30,fit=(measAlpha1)(measAlpha2)]{};}
     \end{pgfonlayer}
     % \onslide<+>{\node[below=1mm of gateUfk, draw, rounded corners, rectangle, decorate, decoration=zigzag]{$\Rightarrow$ Produces $\ket{+_\theta}$};}
-    \onslide<+->{\node[below=3mm of gateUfk, draw, fill, inner color=red!80,outer color=orange!80,decorate,ellipse,decoration={random steps,zigzag,,segment length=2mm,amplitude=1mm}] {$\Rightarrow$ Produces $\ket{+_\theta}$};}
-    
+    \onslide<+->{\node[below=3mm of gateUfk, draw, fill, inner color=red!80,outer color=orange!80,decorate,ellipse,decoration={random steps,zigzag,,segment length=2mm,amplitude=1mm}] (produces) {$\Rightarrow$ Produces $\ket{+_\theta}$};}
+    % \coordinate (endarrow) at (3,-9);
+    % \draw<.-> (endarrow) -- (produces);
   \end{tikzpicture}
 \end{standaloneframe}
 \end{document}

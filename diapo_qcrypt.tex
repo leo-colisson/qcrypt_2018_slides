@@ -1,4 +1,4 @@
-\documentclass[]{beamer}
+\documentclass[table]{beamer}
 
 %% Good expressions:
 %% UBQC: include rotated qubits in the graph
@@ -8,6 +8,7 @@
 
 \input{includes.tex}
 \usepackage{blindtext, multicol}
+\usepackage{MyMnSymbol}
 
 % \usepackage{thmtools}
 % \let\definition\relax
@@ -251,8 +252,8 @@ $$ \theta \approx \sum \underbrace{\textcolor{red}{(x_i - x_i')}}_{\substack{\te
   \begin{exampleblock}{Future work}
     \begin{itemize}
     \item Improve proof of security in Universal Composability model
-    \item Improve efficiency in blind computing (GHZ state\dots)
-    \item Explore new possible applications, certified qubits (QFactory + Zero Knowledge proof) that could improve MPC\dots
+    \item Improve efficiency in blind computing
+    \item Explore new possible applications, certified qubits (QFactory + Zero Knowledge proof) that could improve MPC, GHZ state\dots\dots
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -344,6 +345,36 @@ $$ \theta \approx \sum \underbrace{\textcolor{red}{(x_i - x_i')}}_{\substack{\te
     \includegraphics[width=.8\textwidth]{figures/example_dimension2.pdf}
   \end{figure}
   $$f_{A,y}((s,e),c) = Ax + e + c \times y$$
+\end{frame}
+
+\begin{frame}[noframenumbering]{Comparison with other works}
+  \begingroup
+  \fontsize{10pt}{10pt}\selectfont
+  \begin{table}%
+    \def\colorsure{green!50!black}
+    \def\colorhonnest{green}
+    \def\colornoproof{yellow}
+    \def\colornotpossible{red}
+    \newcommand\Tstrut{\rule{0pt}{2.6ex}}       % "top" strut
+    \newcommand\Bstrut{\rule[-0.9ex]{0pt}{0pt}} % "bottom" strut
+    \newcommand{\TBstrut}{\Tstrut\Bstrut} % top&bottom struts
+    \begin{tabularx}{\linewidth}{ | c | X | X | X |}
+      \hline
+      Paper                   & \tiny Classical Homomorphic Encryption for Quantum Circuits & \tiny On the possibility of blind quantum computing & \tiny  Classical Verification of Quantum Computations \TBstrut\\
+      \hline
+      Blind input             & \cellcolor{\colorsure}                                      & \cellcolor{\colorhonnest}                           & \cellcolor{\colornoproof}                             \TBstrut\\
+      \hline
+      Blind algorithm         & \cellcolor{\colornoproof}                                   & \cellcolor{\colorhonnest}                           & \cellcolor{\colornoproof}                             \TBstrut\\
+      \hline
+      Verifiability           & \cellcolor{\colornotpossible}                               & \cellcolor{\colornoproof}                           & \cellcolor{\colorsure}                                \TBstrut\\
+      \hline
+      Non-Interactive         & \cellcolor{\colorsure}                                      & \cellcolor{\colornotpossible}                       & \cellcolor{\colornotpossible}                         \TBstrut\\
+      \hline
+      Efficiency/Requirements & FHE                                                         & UBQC/VBQC, Linear                                   & Post-hoc, poly degree 9?                              \TBstrut\\
+      \hline
+    \end{tabularx}
+  \end{table}
+  \endgroup
 \end{frame}
 
 \end{document}
