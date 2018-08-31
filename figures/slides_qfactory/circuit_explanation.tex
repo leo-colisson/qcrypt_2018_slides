@@ -137,8 +137,8 @@
     \end{pgfonlayer}
     % \onslide<+>{\node[below=1mm of gateUfk, draw, rounded corners, rectangle, decorate, decoration=zigzag]{$\Rightarrow$ Produces $\ket{+_\theta}$};}
     \onslide<+->{\node[below=3mm of gateUfk, draw, fill, inner color=red!80,outer color=orange!80,decorate,ellipse,decoration={random steps,zigzag,,segment length=2mm,amplitude=1mm}] (produces) {$\Rightarrow$ Produces $\ket{+_\theta}$};}
-    % \coordinate (endarrow) at (3,-9);
-    % \draw<.-> (endarrow) -- (produces);
+    \coordinate (endarrow) at (8,-4);
+    \draw<.->[red!50!orange,-latex,thick] (endarrow) to[out=-90,in=45] (produces.east);
   \end{tikzpicture}
 \end{standaloneframe}
 \end{document}
