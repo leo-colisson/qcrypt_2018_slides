@@ -1,0 +1,20 @@
+\documentclass[beamer,tikz,preview]{standalone}
+\input{../../includes.tex}
+
+\graphicspath{{../}}
+
+\begin{document}
+\begin{standaloneframe}[fragile]
+  \begin{tikzpicture}
+    \node[draw,rectangle,rounded corners,align=center,text width=4cm,minimum height=3cm,fill=blue!30] (adv) {Adversary};
+    \draw[arrows = {-Stealth[scale=1]}] ([xshift=-2cm,yshift=-15mm]adv.north west) -- ([yshift=-15mm]adv.north west) node[midway,above,scale=.75] (ky) {$k,y,(\alpha_i),(b_i)$};
+    \draw[arrows = {-Stealth[scale=1]}, double distance=1.5pt] (adv.south) -- ([yshift=-1cm]adv.south)
+    node[below] {$\theta'$};
+  \end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
